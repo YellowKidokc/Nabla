@@ -57,6 +57,15 @@ Run the Nabla station:
 
     python nabla/pipeline.py
 
+Run the local paper workbench, open the printed URL, choose a Markdown/TXT/HTML
+paper and select Local NLP or a configured API provider:
+
+    python -m gui.app
+
+The same source-to-record path is available from the command line:
+
+    python -m meta.pipeline --source paper.md --provider local --out atlas-record.json
+
 Build and validate the Master Equation AtlasRecord specimen:
 
     python -m meta.pipeline
