@@ -47,7 +47,9 @@ def resolve_source_path(raw_path: str) -> Path:
     path = Path(raw_path)
     if path.exists():
         return path
-    candidate = ATOM_ROOT / "master-equation" / "01_canonical" / path.name
+    # Ledger receipts may retain a Windows path even when the workbench runs on
+    # POSIX. Treat both separators as provenance syntax, not host path syntax.
+    candidate = ATOM_ROOT / "master-equation" / "01_canonical" / raw_path.replace("\\", "/").rsplit("/", 1)[-1]
     return candidate if candidate.exists() else path
 
 
@@ -227,10 +229,27 @@ def build_record(atom_path: Path) -> dict[str, Any]:
     bridges = [
         {
             "bridge_id": f"bridge:{digest(atom['atom_id'] + bridge)}",
-            "target": bridge,
+            "source_id": atom["atom_id"],
+            "target_id": bridge,
+            "source_domain": atom.get("domain", ""),
+            "target_domain": "UNDECLARED",
+            "direction": "A_to_B",
             "mapping_type": source_edges.get(bridge, {}).get("grade", atom.get("bridge_grade", "declared_bridge")),
+            "manifest": {
+                "preserved": [],
+                "lost": [],
+                "introduced": [],
+                "forbidden": ["Bridge declaration must not promote native grade without independent warrant."],
+            },
+            "assumptions": [],
+            "negative_controls": [],
+            "ablation_result": "not_run",
+            "provenance_distance": "UNDECLARED",
+            "reference_independence": "UNDECLARED",
             "standing": "Admitted" if source_edges.get(bridge, {}).get("status") == "accepted" else "Candidate",
-            "forbidden": "Bridge declaration must not promote native grade without independent warrant.",
+            "dispute": "none_declared",
+            "grade": "UNDECLARED",
+            "validation_state": "Admitted" if source_edges.get(bridge, {}).get("status") == "accepted" else "Candidate",
         }
         for bridge in atom.get("bridges", [])
     ]
@@ -265,6 +284,44 @@ def build_record(atom_path: Path) -> dict[str, Any]:
         }
     ]
 
+    unresolved_rows = [
+        {
+            "field_or_requirement": "Marker 12 normalized evidence grade",
+            "reason": f"Native grade {native_grade!r} is not present in the C0-C6 grade registry." if not grade_rule else "Mapped by grade registry.",
+            "next_step": "Assign or import a ratified C0-C6 native grade before projecting an Atlas grade." if not grade_rule else "No action required.",
+        },
+        {
+            "field_or_requirement": "Epistemic and scope classification band",
+            "reason": "The Lane 4 atom layer carries no epistemic class, scope level, derivation status, or external-independence fields; the band is emitted UNDECLARED rather than inferred.",
+            "next_step": "Run a human or API classification pass and record origin plus confidence per Canonical Architecture v0.3 section 17.",
+        },
+        {
+            "field_or_requirement": "Dynamics-7 probe",
+            "reason": "No DG7 probe receipt exists for this atom; all eight storage fields are emitted not_run.",
+            "next_step": "Run the DG7 probe and attach its receipt; keep restoration_self and restoration_external as separate fields.",
+        },
+        {
+            "field_or_requirement": "Nabla v6 vector, pairing hash, and per-dimension confidence",
+            "reason": "No source-owned Nabla packet for this exact Master Equation atom was found; only a deterministic repository address can be derived safely.",
+            "next_step": "Run the Nabla classifier and attach its source packet without replacing the canonical artifact paths or spans.",
+        },
+        {
+            "field_or_requirement": "Argument Compiler native extraction",
+            "reason": "The remote draft schema has Source, Citation, Evidence, Claim, ArgumentEdge, and ArgumentGraph, but no implemented source extraction receipt, component model, warrant/objection model, or byte-preserving source-span contract.",
+            "next_step": "Implement a typed export adapter in argument-compiler; replace the current Lane 4 adaptation only after its output preserves exact locators and source hashes.",
+        },
+        {
+            "field_or_requirement": "The Meta-Argument deterministic scoring",
+            "reason": "The remote case schema is real but requires actor/action/target/cost-bearer historical-case fields. The Master Equation formal claim cannot be inserted without fabricating those values.",
+            "next_step": "Add a formal-claim adapter or a separate typed case profile, then run the existing engine to fill variables, direction, veto, confidence, dependencies, and refusal states.",
+        },
+        {
+            "field_or_requirement": "AXIOM-REACT render integration",
+            "reason": "No React import route has been wired yet.",
+            "next_step": "Add AXIOM-REACT data loader for gold/master-equation/atlas-record-v1.master-equation.trilemma.json.",
+        }
+    ]
+
     return {
         "schema_version": "atlas-record/v1",
         "id": {
@@ -277,6 +334,7 @@ def build_record(atom_path: Path) -> dict[str, Any]:
         "source": {
             "kind": "lane4_atom_json",
             "title": atom["title"],
+            "publication_state": f"source:{source.get('stage', 'UNKNOWN')}/{source.get('status', 'UNKNOWN')};lane4:{atom.get('current_status', 'UNKNOWN')}",
             "content_hash": file_hash(source_path) if source_path else "UNKNOWN",
             "paths": [atom_rel] + source_paths,
             "source_spans": [
@@ -329,21 +387,31 @@ def build_record(atom_path: Path) -> dict[str, Any]:
             "notes": "Nabla canonical service was not available locally; this is a deterministic address derived from existing repository paths and ids.",
         },
         "periodic15": {
-            "marker_1_scope": "paper/local",
-            "marker_2_home_domain": atom.get("domain", ""),
-            "marker_3_native_domains": [atom.get("domain", "")],
-            "marker_4_bridged_domains": admitted_bridge_targets,
-            "marker_5_object_type": "Equation / Model",
-            "marker_6_claim_family": "Quantity / Measurement",
-            "marker_7_function_kind": "Derivation",
-            "marker_8_source_kind": "lane4_atom_json",
-            "marker_9_standing": atom.get("current_status", ""),
-            "marker_10_native_grade": native_grade,
-            "marker_11_modality": atom.get("mode_classification", ""),
-            "marker_12_evidence_grade": normalized_grade,
-            "marker_13_dispute": "open:" + ",".join(open_component_ids) if open_component_ids else "none_declared",
-            "marker_14_publication_state": f"source:{source.get('stage', 'UNKNOWN')}/{source.get('status', 'UNKNOWN')};lane4:{atom.get('current_status', 'UNKNOWN')}",
-            "marker_15_component_state": ",".join(component_types),
+            "m01_identity": atom["atom_id"],
+            "m02_home_domain": atom.get("domain", ""),
+            "m03_native_domains": [atom.get("domain", "")],
+            "m04_bridged_domains": admitted_bridge_targets,
+            "m05_object_type": "Equation / Model",
+            "m06_claim_family": "Quantity / Measurement",
+            "m07_function_kind": "Derivation",
+            "m08_source": "lane4_atom_json",
+            "m09_commitment": atom.get("commitment", "UNDECLARED"),
+            "m10_standing": atom.get("current_status", ""),
+            "m11_dispute": "open:" + ",".join(open_component_ids) if open_component_ids else "none_declared",
+            "m12_evidence_grade": normalized_grade if grade_rule else None,
+            "m13_usage_runs": None,
+            "m14_graph_degree": None,
+            "m15_alert_state": "alert:open_components:" + ",".join(open_component_ids) if open_component_ids else "none",
+        },
+        "epistemic": {
+            "class": atom.get("epistemic_class", "undeclared"),
+            "scope_class": {
+                "level": atom.get("epistemic_scope", "undeclared"),
+                "label": "UNDECLARED",
+            },
+            "derivation_status": "UNDECLARED",
+            "external_independence": "undeclared",
+            "proposition": atom["claim"],
         },
         "atom_stack": {
             "atom": {
@@ -377,6 +445,16 @@ def build_record(atom_path: Path) -> dict[str, Any]:
                 },
                 "descent": descent,
                 "meeting_state": meeting.get("result", "UNRESOLVED"),
+                "dg7": {
+                    "coherence": {"status": "not_run"},
+                    "degradation": {"status": "not_run"},
+                    "measurement": {"status": "not_run"},
+                    "threshold": {"status": "not_run"},
+                    "transition_asymmetry": {"status": "not_run"},
+                    "restoration_self": {"status": "not_run"},
+                    "restoration_external": {"status": "not_run"},
+                    "counterexample": {"status": "not_run"},
+                },
             },
         },
         "evidence_receipts": evidence,
@@ -388,6 +466,16 @@ def build_record(atom_path: Path) -> dict[str, Any]:
             "status": "Candidate",
             "rule": "Reality Mirror tests whether the claim reaches a constraint the system did not manufacture; it is not Marker 16.",
             "anchor_ids": [row["anchor_id"] for row in anchors],
+        },
+        "reference_interface": {
+            "status": "not_run",
+            "note": "Gamma (Reference Interface) review was not run by this builder. Reference failure is not interface failure.",
+        },
+        "ascent_interface": {
+            "status": "candidate" if ascent else "not_run",
+            "method": "lane4_atom_json projection adaptation",
+            "provenance": [],
+            "note": "Cold reconstruction record. Ascent may not assume it reaches the Descent reference.",
         },
         "meta_argument": {
             "status": "not_run",
@@ -457,34 +545,9 @@ def build_record(atom_path: Path) -> dict[str, Any]:
                 "Meta score is not native grade.",
                 "Reality Mirror is metadata, not Marker 16."
             ],
+            "open": unresolved_rows,
         },
-        "unresolved": [
-            {
-                "field_or_requirement": "Marker 12 normalized evidence grade",
-                "reason": f"Native grade {native_grade!r} is not present in the C0-C6 grade registry." if not grade_rule else "Mapped by grade registry.",
-                "next_step": "Assign or import a ratified C0-C6 native grade before projecting an Atlas grade." if not grade_rule else "No action required.",
-            },
-            {
-                "field_or_requirement": "Nabla v6 vector, pairing hash, and per-dimension confidence",
-                "reason": "No source-owned Nabla packet for this exact Master Equation atom was found; only a deterministic repository address can be derived safely.",
-                "next_step": "Run the Nabla classifier and attach its source packet without replacing the canonical artifact paths or spans.",
-            },
-            {
-                "field_or_requirement": "Argument Compiler native extraction",
-                "reason": "The remote draft schema has Source, Citation, Evidence, Claim, ArgumentEdge, and ArgumentGraph, but no implemented source extraction receipt, component model, warrant/objection model, or byte-preserving source-span contract.",
-                "next_step": "Implement a typed export adapter in argument-compiler; replace the current Lane 4 adaptation only after its output preserves exact locators and source hashes.",
-            },
-            {
-                "field_or_requirement": "The Meta-Argument deterministic scoring",
-                "reason": "The remote case schema is real but requires actor/action/target/cost-bearer historical-case fields. The Master Equation formal claim cannot be inserted without fabricating those values.",
-                "next_step": "Add a formal-claim adapter or a separate typed case profile, then run the existing engine to fill variables, direction, veto, confidence, dependencies, and refusal states.",
-            },
-            {
-                "field_or_requirement": "AXIOM-REACT render integration",
-                "reason": "No React import route has been wired yet.",
-                "next_step": "Add AXIOM-REACT data loader for gold/master-equation/atlas-record-v1.master-equation.trilemma.json.",
-            }
-        ],
+        "unresolved": unresolved_rows,
     }
 
 
