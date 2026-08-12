@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://faiththruphysics.com/schema/atlas_record_v1.schema.json",
   "title": "AtlasRecord v1",
-  "description": "Shared record contract for Nabla routing, argument compilation, deterministic audit, Atlas local/cross-domain placement, and AXIOM-REACT rendering. Subsystems fill only the fields they own.",
+  "description": "Shared record contract for Nabla routing, argument compilation, deterministic audit, Atlas local/cross-domain placement, and AXIOM-REACT rendering. Subsystems fill only the fields they own. Periodic-15 marker contract frozen by Consilience Atlas Canonical Architecture v0.3 section 9 (2026-08-12): key format m##_name matches templates/atlas-workbench.html; marker semantics never change across Paper, Series, Cross-Series, or Global resolutions. Computed markers (m12-m14) are null until the deterministic computation layer fills them and are never hand-entered.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,12 +11,15 @@
     "source",
     "nabla",
     "periodic15",
+    "epistemic",
     "atom_stack",
     "evidence_receipts",
     "edges",
     "bridges",
     "anchors",
     "reality_mirror",
+    "reference_interface",
+    "ascent_interface",
     "meta_argument",
     "computed",
     "audit",
@@ -28,12 +31,15 @@
     "source": { "$ref": "#/$defs/source_block" },
     "nabla": { "$ref": "#/$defs/nabla_block" },
     "periodic15": { "$ref": "#/$defs/periodic15_block" },
+    "epistemic": { "$ref": "#/$defs/epistemic_block" },
     "atom_stack": { "$ref": "#/$defs/atom_stack_block" },
     "evidence_receipts": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
     "edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } },
     "bridges": { "type": "array", "items": { "$ref": "#/$defs/bridge" } },
     "anchors": { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
     "reality_mirror": { "$ref": "#/$defs/reality_mirror_block" },
+    "reference_interface": { "$ref": "#/$defs/reference_interface_block" },
+    "ascent_interface": { "$ref": "#/$defs/ascent_interface_block" },
     "meta_argument": { "$ref": "#/$defs/meta_argument_block" },
     "computed": { "$ref": "#/$defs/computed_block" },
     "audit": { "$ref": "#/$defs/audit_block" },
@@ -62,7 +68,8 @@
         "content_hash": { "type": "string" },
         "paths": { "type": "array", "items": { "type": "string" } },
         "source_spans": { "type": "array", "items": { "$ref": "#/$defs/source_span" } },
-        "provenance": { "type": "array", "items": { "$ref": "#/$defs/provenance_event" } }
+        "provenance": { "type": "array", "items": { "$ref": "#/$defs/provenance_event" } },
+        "publication_state": { "type": "string", "description": "Record lifecycle state (migrated from the retired marker_14_publication_state). Publication state is provenance metadata, not a Periodic marker." }
       }
     },
     "nabla_block": {
@@ -80,40 +87,70 @@
     "periodic15_block": {
       "type": "object",
       "additionalProperties": false,
+      "description": "Fifteen-marker contract per Canonical Architecture v0.3 section 9. m04 lists admitted bridges only. m12-m14 are computed markers: null until computed, never fabricated by an AI or hand-entered as facts.",
       "required": [
-        "marker_1_scope",
-        "marker_2_home_domain",
-        "marker_3_native_domains",
-        "marker_4_bridged_domains",
-        "marker_5_object_type",
-        "marker_6_claim_family",
-        "marker_7_function_kind",
-        "marker_8_source_kind",
-        "marker_9_standing",
-        "marker_10_native_grade",
-        "marker_11_modality",
-        "marker_12_evidence_grade",
-        "marker_13_dispute",
-        "marker_14_publication_state",
-        "marker_15_component_state"
+        "m01_identity",
+        "m02_home_domain",
+        "m03_native_domains",
+        "m04_bridged_domains",
+        "m05_object_type",
+        "m06_claim_family",
+        "m07_function_kind",
+        "m08_source",
+        "m09_commitment",
+        "m10_standing",
+        "m11_dispute",
+        "m12_evidence_grade",
+        "m13_usage_runs",
+        "m14_graph_degree",
+        "m15_alert_state"
       ],
       "properties": {
-        "marker_1_scope": { "type": "string" },
-        "marker_2_home_domain": { "type": "string" },
-        "marker_3_native_domains": { "type": "array", "items": { "type": "string" } },
-        "marker_4_bridged_domains": { "type": "array", "items": { "type": "string" } },
-        "marker_5_object_type": { "type": "string" },
-        "marker_6_claim_family": { "type": "string" },
-        "marker_7_function_kind": { "type": "string" },
-        "marker_8_source_kind": { "type": "string" },
-        "marker_9_standing": { "type": "string" },
-        "marker_10_native_grade": { "type": "string" },
-        "marker_11_modality": { "type": "string" },
-        "marker_12_evidence_grade": { "type": "string" },
-        "marker_13_dispute": { "type": "string" },
-        "marker_14_publication_state": { "type": "string" },
-        "marker_15_component_state": { "type": "string" }
+        "m01_identity": { "type": "string", "description": "Marker 01 - Atom ID (registry-backed semantic code or opaque stable ID)." },
+        "m02_home_domain": { "type": "string", "description": "Marker 02 - Home domain. Domain IDs must resolve against meta/registries/domains.json (registry, not closed enum)." },
+        "m03_native_domains": { "type": "array", "items": { "type": "string" }, "description": "Marker 03 - Native domains. Native is not bridged." },
+        "m04_bridged_domains": { "type": "array", "items": { "type": "string" }, "description": "Marker 04 - Bridged domains. Admitted bridges only; candidate similarities stay in bridges[]." },
+        "m05_object_type": { "type": "string", "description": "Marker 05 - Object type." },
+        "m06_claim_family": { "type": "string", "description": "Marker 06 - Claim family." },
+        "m07_function_kind": { "type": "string", "description": "Marker 07 - Function kind (Definition / Claim / Derivation / Evidence / Verdict)." },
+        "m08_source": { "type": "string", "description": "Marker 08 - Source. Source is not commitment." },
+        "m09_commitment": { "type": "string", "description": "Marker 09 - Commitment. Orthogonal to source and to standing." },
+        "m10_standing": { "type": "string", "description": "Marker 10 - Standing. Standing is not dispute." },
+        "m11_dispute": { "type": "string", "description": "Marker 11 - Dispute." },
+        "m12_evidence_grade": { "type": ["string", "null"], "description": "Marker 12 - Evidence grade. Computed from native warrant through the grade registry; null until computed." },
+        "m13_usage_runs": { "type": ["string", "null"], "description": "Marker 13 - Usage / runs. Computed from run receipts; null until computed." },
+        "m14_graph_degree": { "type": ["string", "integer", "null"], "description": "Marker 14 - Graph degree. Computed from the canonical edge set; null until computed." },
+        "m15_alert_state": { "type": "string", "description": "Marker 15 - Alert state." }
       }
+    },
+    "epistemic_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Epistemic and scope classification band (Master Template v1.1). The atom contains one irreducible proposition; everything else in the record is what the Atlas knows about that proposition.",
+      "required": ["class", "scope_class", "derivation_status", "external_independence", "proposition"],
+      "properties": {
+        "class": { "enum": ["definition", "observation", "theorem", "interpretation", "hypothesis", "undeclared"] },
+        "class_label": { "type": "string" },
+        "scope_class": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["level", "label"],
+          "properties": {
+            "level": { "enum": ["G1", "G2", "G3", "G4", "undeclared"], "description": "G1 single domain, G2 cross-domain invariant, G3 series-level, G4 framework hypothesis." },
+            "label": { "type": "string" },
+            "basis": { "type": "string", "description": "Justification for the scope claim; mandatory in prose whenever level is G2-G4." }
+          }
+        },
+        "derivation_status": { "type": "string", "description": "Whether and how the proposition was derived (for example derived-from-foundations, observed, asserted, undeclared)." },
+        "external_independence": { "enum": ["high", "medium", "low", "none", "undeclared"], "description": "How independent the warrant is from the framework itself." },
+        "proposition": { "type": "string", "description": "The one irreducible proposition this atom carries." },
+        "irreducible": { "type": "boolean" },
+        "origin": { "enum": ["source", "ai_inference", "computed", "human", "external_receipt"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence_basis": { "enum": ["explicit", "strong_context", "inferred", "ambiguous"] }
+      },
+      "if": { "properties": { "origin": { "const": "ai_inference" } }, "required": ["origin"] },
+      "then": { "required": ["confidence", "confidence_basis"] }
     },
     "atom_stack_block": {
       "type": "object",
@@ -158,12 +195,46 @@
     "reality_mirror_block": {
       "type": "object",
       "additionalProperties": false,
+      "description": "Top-level metadata, never Periodic Marker 16. Internal coherence is not external constraint; external requirement is not a specific theological identification.",
       "required": ["class", "status", "rule", "anchor_ids"],
       "properties": {
         "class": { "enum": ["N", "F", "H", "T", "None"] },
         "status": { "enum": ["Endogenous", "Candidate", "Anchored", "Contradicted", "Unresolved"] },
         "rule": { "type": "string" },
         "anchor_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "reference_interface_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Gamma_D - Reference Interface (Canonical Architecture v0.3 section 6). Records how a candidate reference becomes accessible and constraining in a domain. Reference failure is not interface failure.",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["not_applicable", "not_run", "candidate", "validated", "failed"] },
+        "reference_id": { "type": "string" },
+        "access": { "type": "string" },
+        "transmission": { "type": "string" },
+        "interpretation": { "type": "string" },
+        "error_channels": { "type": "array", "items": { "type": "string" } },
+        "verification": { "type": "string" },
+        "correction": { "type": "string" },
+        "expected_structure": { "type": "string" },
+        "predictions": { "type": "array", "items": { "type": "string" } },
+        "limits": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "ascent_interface_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Alpha_D - Ascent Interface (Canonical Architecture v0.3 section 6). Cold reconstruction: source to observation to claim to evidence to dependency to structural abstraction. Ascent may not assume it reaches the Descent reference.",
+      "required": ["status", "method"],
+      "properties": {
+        "status": { "enum": ["not_applicable", "not_run", "candidate", "validated", "failed"] },
+        "method": { "type": "string" },
+        "provenance": { "type": "array", "items": { "$ref": "#/$defs/provenance_event" } },
+        "stages": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" }
       }
     },
     "meta_argument_block": {
@@ -224,6 +295,7 @@
         "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
         "statement": { "type": "string" },
         "source": { "type": "string" },
+        "source_span_ids": { "type": "array", "items": { "type": "string" } },
         "does_not_show": { "type": "array", "items": { "type": "string" } }
       }
     },
@@ -238,6 +310,7 @@
         "condition": { "type": "string" },
         "status": { "type": "string" },
         "blast_radius": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "edge": {
@@ -251,29 +324,90 @@
         "to": { "type": "string" },
         "status": { "type": "string" },
         "source": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "probed_field": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One Dynamics-7 answer slot. UNKNOWN, UNRESOLVED, refusal, and not_run are valid outputs; missing output is never silently synthesized as positive. Confidence is mandatory whenever origin is ai_inference (Canonical Architecture v0.3 section 17).",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["answered", "unknown", "unresolved", "refused", "not_applicable", "not_run"] },
+        "answer": { "type": "string" },
+        "origin": { "enum": ["source", "ai_inference", "computed", "human", "external_receipt"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence_basis": { "enum": ["explicit", "strong_context", "inferred", "ambiguous"] },
+        "source_span_ids": { "type": "array", "items": { "type": "string" } }
+      },
+      "if": { "properties": { "origin": { "const": "ai_inference" } }, "required": ["origin"] },
+      "then": { "required": ["confidence", "confidence_basis"] }
+    },
+    "dg7_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Dynamics-7 probe. Seven questions displayed, eight fields stored: Restoration splits into restoration_self (self-motion along an available gradient, W-grad-chi) and restoration_external (external source term, eta). Counterexample provenance belongs to the verification/falsification architecture, not the differential stack.",
+      "required": ["coherence", "degradation", "measurement", "threshold", "transition_asymmetry", "restoration_self", "restoration_external", "counterexample"],
+      "properties": {
+        "coherence": { "$ref": "#/$defs/probed_field", "description": "What counts as coherence?" },
+        "degradation": { "$ref": "#/$defs/probed_field", "description": "What counts as degradation?" },
+        "measurement": { "$ref": "#/$defs/probed_field", "description": "How is it measured?" },
+        "threshold": { "$ref": "#/$defs/probed_field", "description": "Is there a threshold?" },
+        "transition_asymmetry": { "$ref": "#/$defs/probed_field", "description": "Is the transition asymmetric?" },
+        "restoration_self": { "$ref": "#/$defs/probed_field", "description": "What restores it - self-motion along an existing slope." },
+        "restoration_external": { "$ref": "#/$defs/probed_field", "description": "What restores it - external source term at zero slope." },
+        "counterexample": { "$ref": "#/$defs/probed_field", "description": "Is there a counterexample? Provenance: verification/falsification architecture." }
       }
     },
     "dynamics_block": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["ascent", "translation", "descent", "meeting_state"],
+      "required": ["ascent", "translation", "descent", "meeting_state", "dg7"],
       "properties": {
         "ascent": {},
         "translation": {},
         "descent": {},
-        "meeting_state": { "type": "string" }
+        "meeting_state": { "type": "string" },
+        "dg7": { "$ref": "#/$defs/dg7_block" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "bridge_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What structure transfers across the bridge and what does not. A cross-domain argument is valid exactly when everything it loads onto the bridge lies in PRESERVED. The manifest must be specified independently from each domain before the bridge is used as support, or the argument is circular.",
+      "required": ["preserved", "lost", "introduced", "forbidden"],
+      "properties": {
+        "preserved": { "type": "array", "items": { "type": "string" } },
+        "lost": { "type": "array", "items": { "type": "string" } },
+        "introduced": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
       }
     },
     "bridge": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["bridge_id", "target", "mapping_type", "standing", "forbidden"],
+      "description": "A bridge is an explicit object, not a color or analogy (Canonical Architecture v0.3 section 12). A-to-B and B-to-A are separate claims. Domain independence is not referential/provenance independence.",
+      "required": ["bridge_id", "source_id", "target_id", "direction", "mapping_type", "manifest", "standing", "validation_state"],
       "properties": {
         "bridge_id": { "type": "string" },
-        "target": { "type": "string" },
+        "source_id": { "type": "string" },
+        "target_id": { "type": "string" },
+        "source_domain": { "type": "string" },
+        "target_domain": { "type": "string" },
+        "direction": { "enum": ["A_to_B", "B_to_A"], "description": "A_to_B and B_to_A are separate claims and separate bridge objects." },
         "mapping_type": { "type": "string" },
+        "manifest": { "$ref": "#/$defs/bridge_manifest" },
+        "assumptions": { "type": "array", "items": { "type": "string" } },
+        "negative_controls": { "type": "array", "items": { "type": "string" } },
+        "ablation_result": { "type": "string" },
+        "provenance_distance": { "type": "string" },
+        "reference_independence": { "type": "string" },
         "standing": { "type": "string" },
-        "forbidden": { "type": "string" }
+        "dispute": { "type": "string" },
+        "grade": { "type": "string" },
+        "validation_state": { "enum": ["Candidate", "Provisional", "Admitted", "Suspended", "Revoked", "Rejected"], "description": "Bridge lifecycle. Resonance discovers candidates; Phi adjudicates admission." }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "anchor": {
@@ -286,6 +420,7 @@
         "status": { "type": "string" },
         "target_id": { "type": "string" },
         "limitations": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "computed_block": {
@@ -302,11 +437,12 @@
     "audit_block": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["candidate_or_admitted", "subsystem_receipts", "warnings"],
+      "required": ["candidate_or_admitted", "subsystem_receipts", "warnings", "open"],
       "properties": {
         "candidate_or_admitted": { "enum": ["Candidate", "Admitted", "Blocked", "Unknown"] },
         "subsystem_receipts": { "type": "array", "items": { "$ref": "#/$defs/subsystem_receipt" } },
-        "warnings": { "type": "array", "items": { "type": "string" } }
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "open": { "type": "array", "items": { "$ref": "#/$defs/unmapped" }, "description": "Open / unresolved audit class (Canonical Architecture v0.3 section 11). Mirrors the top-level unresolved list so the audit surface is self-contained." }
       }
     },
     "source_span": {
