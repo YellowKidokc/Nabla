@@ -343,6 +343,15 @@ def split_works(text: str) -> list[dict[str, str]]:
     if work_start is not None:
         pieces.append(make_work(turn, work_start.group(1), text[work_start.start() :]))
 
+    if not pieces and text.strip():
+        pieces.append({
+            "work_id": "W0.1",
+            "title": "Standalone Canonical Source",
+            "turn": "Standalone source",
+            "source_path": "",
+            "body": text.strip(),
+        })
+
     return pieces
 
 

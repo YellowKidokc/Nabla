@@ -34,6 +34,7 @@
     "bridges": { "type": "array", "items": { "$ref": "#/$defs/bridge" } },
     "anchors": { "type": "array", "items": { "$ref": "#/$defs/anchor" } },
     "reality_mirror": { "$ref": "#/$defs/reality_mirror_block" },
+    "orientation": { "$ref": "#/$defs/orientation_block" },
     "meta_argument": { "$ref": "#/$defs/meta_argument_block" },
     "computed": { "$ref": "#/$defs/computed_block" },
     "audit": { "$ref": "#/$defs/audit_block" },
@@ -262,6 +263,38 @@
         "translation": {},
         "descent": {},
         "meeting_state": { "type": "string" }
+      }
+    },
+    "orientation_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ascent", "translation", "descent", "meeting"],
+      "properties": {
+        "ascent": { "$ref": "#/$defs/orientation_lane" },
+        "translation": { "type": "object", "required": ["mappings"], "properties": { "mappings": { "type": "array", "items": { "$ref": "#/$defs/translation_mapping" } } } },
+        "descent": { "$ref": "#/$defs/orientation_lane" },
+        "meeting": { "type": "object", "required": ["comparisons", "state"], "properties": { "comparisons": { "type": "array", "items": { "type": "object" } }, "state": { "enum": ["CONVERGED", "PRESSURE", "PREDICTED_NOT_OBSERVED", "UNRESOLVED", "CONTRADICTED"] } } }
+      }
+    },
+    "orientation_lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodes", "edges"],
+      "properties": {
+        "nodes": { "type": "array", "items": { "type": "object" } },
+        "edges": { "type": "array", "items": { "type": "object" } },
+        "terminal_candidates": { "type": "array", "items": { "type": "string" } },
+        "test_targets": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "translation_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["translation_id", "ascent_object", "descent_object", "preserved", "lost", "introduced", "forbidden", "direction", "status"],
+      "properties": {
+        "translation_id": { "type": "string" }, "ascent_object": { "type": "string" }, "descent_object": { "type": "string" },
+        "preserved": { "type": "array", "items": { "type": "string" } }, "lost": { "type": "array", "items": { "type": "string" } }, "introduced": { "type": "array", "items": { "type": "string" } }, "forbidden": { "type": "array", "items": { "type": "string" } },
+        "direction": { "enum": ["A_TO_D", "D_TO_A", "BIDIRECTIONAL"] }, "status": { "enum": ["Candidate", "Unresolved", "Rejected"] }, "confidence": { "type": "number" }, "declared_by": { "type": "string" }
       }
     },
     "bridge": {

@@ -8,6 +8,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from claim_ledger import record_method_run
 from method_core import read_json, sha256_bytes, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,6 +67,9 @@ def main() -> int:
              run_dir / "04-compare.log")
         status = "comparison_complete"
 
+    ledger = None
+    if api_run.exists():
+        ledger = record_method_run(read_json(api_run))
     manifest = {
         "schema_version": "atlas-method-run-manifest/v1",
         "source": str(source),
@@ -77,6 +81,7 @@ def main() -> int:
         "local_run": str(local_run),
         "api_run": str(api_run) if api_run.exists() else None,
         "comparison": str(comparison) if comparison.exists() else None,
+        "claim_ledger": ledger,
     }
     write_json(run_dir / "manifest.json", manifest)
     print(run_dir)

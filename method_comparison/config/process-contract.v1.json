@@ -67,7 +67,35 @@
       }
     },
     {
-      "id": "08_synthesis",
+      "id": "08_natural_process_mirror",
+      "title": "Natural process mirror gate",
+      "instruction": "For every load-bearing process, sequence, derivation, restoration pattern, bridge, or claimed cross-domain structure, ask whether there is an endogenous natural-world process in physics, biology, chemistry, cosmology, information theory, or another empirical domain that mirrors it. A mirror candidate must decompose both sides into the same ordered parts, preserve directionality, preserve function, name constraints and failure modes, and disclose losses or introduced structure. If a source process has 12 parts, the proposed natural mirror must account for those 12 parts in the same order unless it is explicitly marked partial or failed. Do not promote analogy to isomorphism. If no candidate exists, return unresolved questions and mirror_gate_status NEEDS_NATURAL_ANCHOR.",
+      "required_keys": ["natural_process_mirrors", "unresolved_natural_process_questions", "mirror_gate_status"],
+      "item_contract": {
+        "natural_process_mirrors": {
+          "claim_id": "existing claim_id or empty",
+          "source_process": "string",
+          "natural_domain": "physics|biology|chemistry|cosmology|information_theory|other|unknown",
+          "natural_process": "string",
+          "part_count_source": "integer",
+          "part_count_mirror": "integer",
+          "ordered_stage_map": [{"source_stage": "string", "natural_stage": "string", "same_direction": "boolean", "same_function": "boolean", "notes": "string"}],
+          "directionality": "same|reversed|bidirectional|partial|unknown",
+          "functionality_match": "full|partial|weak|none|unknown",
+          "mapping_type": "isomorphism_candidate|homomorphism_candidate|partial|analogy|none",
+          "constraints_preserved": ["string"],
+          "failure_modes_preserved": ["string"],
+          "lost": ["string"],
+          "introduced": ["string"],
+          "test_needed": ["string"],
+          "status": "candidate|needs_receipt|partial|failed|unresolved"
+        },
+        "unresolved_natural_process_questions": ["string"],
+        "mirror_gate_status": "PASSED_CANDIDATE|PARTIAL|NEEDS_NATURAL_ANCHOR|FAILED|UNRESOLVED"
+      }
+    },
+    {
+      "id": "09_synthesis",
       "title": "Page-level synthesis",
       "instruction": "Aggregate the lane's prior outputs into a coherent account with unresolved items and explicit limits. Do not promote Candidate material.",
       "required_keys": ["summary", "strongest_points", "weakest_points", "unresolved", "recommended_next_actions"]

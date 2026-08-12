@@ -1,4 +1,4 @@
----
+Let me go to Mcdonald's want anything No but thank you ---
 title: "How To Destroy This Argument — Hubble Gradient"
 created: 2026-03-04
 author: David Lowe

@@ -1,0 +1,1037 @@
+{
+  "work_id": "W0.1",
+  "title": "Derivative Chain 9 — The Trinity",
+  "turn": "Standalone source",
+  "source_path": "",
+  "overall_status": "reviewed",
+  "summary": "This work proposes a formal isomorphism between quaternion electromagnetism and the Christian Trinity, deriving seven divine attributes as equilibrium properties. The parent isomorphism is claimed Lean-verified, but the derived terms are explicitly marked as unverified drafts. The review identifies several overclaims, especially the 'operation is a person' rhetoric and the mapping of physical equations to divine persons, which are theological interpretations rather than derivations.",
+  "claims": [
+    {
+      "claim_id": "W0.1-C001",
+      "claim_text": "The quaternion EM formulation is isomorphic to the Trinity, with the scalar-vector coupling corresponding to the Holy Spirit.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "lean_formal",
+      "evidence_needed": [
+        "Lean proof of isomorphism between quaternion EM and a formal model of the Trinity"
+      ],
+      "evidence_present": [
+        "Lean 4 verification claimed: quaternionEM_valid, trinityRelational_valid, no_iso_from_quaternion_to_heaviside"
+      ],
+      "evidence_gap": [
+        "The Lean proof is not provided; the mapping of specific equations to persons is not formally derived"
+      ],
+      "support": [
+        "Lean 4 verified isomorphism. Parent: quaternion EM formulation (Maxwell's original)."
+      ],
+      "dependencies": [
+        "Lean receipt",
+        "Maxwell's quaternion formulation"
+      ],
+      "risks": [
+        "The mapping of physical equations to divine persons is a theological interpretation, not a mathematical derivation."
+      ],
+      "kill_condition": "If the Lean proof is shown to be invalid or the mapping is shown to be arbitrary.",
+      "required_concession": "The isomorphism is a formal mapping between mathematical structures; the theological interpretation is an additional step.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "lean4",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.6,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/lean4.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "lean_formal",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "lean4",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C002",
+      "claim_text": "The operation '+' in arithmetic is a person (the Holy Spirit).",
+      "framework_lane": "story",
+      "physics_claim_type": "not_physics",
+      "defense_class": "RHETORIC",
+      "claim_level": "story",
+      "evidence_lane": "story_quality",
+      "evidence_needed": [
+        "None; this is a rhetorical illustration."
+      ],
+      "evidence_present": [
+        "None"
+      ],
+      "evidence_gap": [
+        "No formal or theological support for treating '+' as a person."
+      ],
+      "support": [
+        "The operation is Someone. Father beholds Son. Son beholds Father. The beholding itself is the Third Person."
+      ],
+      "dependencies": [],
+      "risks": [
+        "This is a poetic analogy that could be mistaken for a literal claim."
+      ],
+      "kill_condition": "None; it is not a formal claim.",
+      "required_concession": "This is an illustrative analogy, not a mathematical or theological proof.",
+      "recommended_action": "demote",
+      "glyphs": [
+        "render-html",
+        "claim",
+        "boundary",
+        "kill-condition"
+      ],
+      "confidence": 0.9,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/render-html.svg",
+        "theophysics_glyphs/svg/claim.svg",
+        "theophysics_glyphs/svg/boundary.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "story",
+        "physics_claim_type": "not_physics",
+        "defense_class": "RHETORIC",
+        "claim_level": "story",
+        "evidence_lane": "story_quality",
+        "recommended_action": "demote",
+        "glyphs": [
+          "render-html",
+          "claim",
+          "boundary",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C003",
+      "claim_text": "The Trinity generates numbers: 1 requires being (Father), 2 requires distinction (Son), 3 requires relation (Spirit).",
+      "framework_lane": "trinity",
+      "physics_claim_type": "not_physics",
+      "defense_class": "RHETORIC",
+      "claim_level": "theological",
+      "evidence_lane": "philosophical_argument",
+      "evidence_needed": [
+        "A rigorous philosophical argument that numbers presuppose these categories."
+      ],
+      "evidence_present": [
+        "None beyond assertion."
+      ],
+      "evidence_gap": [
+        "No formal derivation or philosophical justification."
+      ],
+      "support": [
+        "1 requires being — the Father: I AM. 2 requires distinction — the Son. 3 requires relation — the Spirit."
+      ],
+      "dependencies": [],
+      "risks": [
+        "This is a speculative theological claim presented as if it were a derivation."
+      ],
+      "kill_condition": "If a counterexample shows numbers can exist without these categories.",
+      "required_concession": "This is a theological interpretation of arithmetic, not a mathematical theorem.",
+      "recommended_action": "demote",
+      "glyphs": [
+        "theology",
+        "claim",
+        "render-html",
+        "logos",
+        "boundary",
+        "kill-condition"
+      ],
+      "confidence": 0.8,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/claim.svg",
+        "theophysics_glyphs/svg/render-html.svg",
+        "theophysics_glyphs/svg/logos.svg",
+        "theophysics_glyphs/svg/boundary.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "not_physics",
+        "defense_class": "RHETORIC",
+        "claim_level": "theological",
+        "evidence_lane": "philosophical_argument",
+        "recommended_action": "demote",
+        "glyphs": [
+          "theology",
+          "claim",
+          "render-html",
+          "logos",
+          "boundary",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C004",
+      "claim_text": "Heaviside's reduction of quaternions to vector calculus loses information that is provably unrecoverable.",
+      "framework_lane": "physics",
+      "physics_claim_type": "established_physics",
+      "defense_class": "DERIVATION",
+      "claim_level": "physics",
+      "evidence_lane": "lean_formal",
+      "evidence_needed": [
+        "Formal proof that the quaternion product cannot be reconstructed from dot and cross products."
+      ],
+      "evidence_present": [
+        "Lean 4 verification claimed: no_iso_from_quaternion_to_heaviside."
+      ],
+      "evidence_gap": [
+        "The Lean proof is not provided; the claim is plausible but needs verification."
+      ],
+      "support": [
+        "The full quaternion product couples the scalar and vector parts in a way that vector-only operations cannot reconstruct."
+      ],
+      "dependencies": [
+        "Lean receipt"
+      ],
+      "risks": [
+        "The claim is mathematically sound but the proof is not shown."
+      ],
+      "kill_condition": "If a counterexample shows that dot and cross products can reconstruct the quaternion product.",
+      "required_concession": "The information loss is in the coupling, not in the individual components.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "physics",
+        "proof",
+        "lean4",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.7,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/physics.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/lean4.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "physics",
+        "physics_claim_type": "established_physics",
+        "defense_class": "DERIVATION",
+        "claim_level": "physics",
+        "evidence_lane": "lean_formal",
+        "recommended_action": "keep",
+        "glyphs": [
+          "physics",
+          "proof",
+          "lean4",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C005",
+      "claim_text": "The Maxwell equations map to the Trinity: ∇·E = ρ/ε₀ (Father), ∇·B = 0 (Son), curl equations (Spirit).",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "lean_formal",
+      "evidence_needed": [
+        "A formal derivation that the equations correspond to the persons."
+      ],
+      "evidence_present": [
+        "The mapping is stated, but no formal derivation is given."
+      ],
+      "evidence_gap": [
+        "The mapping is arbitrary; no formal rule connects equations to persons."
+      ],
+      "support": [
+        "Father: ∇·E = ρ/ε₀. Son: ∇·B = 0. Spirit: ∇×E = −∂B/∂t, ∇×B = μ₀J + μ₀ε₀∂E/∂t."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The mapping is a theological interpretation, not a mathematical consequence."
+      ],
+      "kill_condition": "If a different mapping is equally plausible.",
+      "required_concession": "The mapping is a proposed interpretation, not a proven isomorphism.",
+      "recommended_action": "demote",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "lean4",
+        "boundary",
+        "kill-condition"
+      ],
+      "confidence": 0.5,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/lean4.svg",
+        "theophysics_glyphs/svg/boundary.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "lean_formal",
+        "recommended_action": "demote",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "lean4",
+          "boundary",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C006",
+      "claim_text": "Perichoresis (mutual indwelling) is the coupling invariant of the quaternion EM system.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "lean_formal",
+      "evidence_needed": [
+        "Formal proof that the coupling invariant corresponds to mutual indwelling."
+      ],
+      "evidence_present": [
+        "The coupling invariant is part of the Lean-verified parent."
+      ],
+      "evidence_gap": [
+        "The theological term is not formally defined in the math."
+      ],
+      "support": [
+        "The quaternion scalar-vector coupling is perfect and bidirectional. No information loss between persons."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The mapping is a theological interpretation."
+      ],
+      "kill_condition": "If the coupling invariant is not unique to the Trinity.",
+      "required_concession": "The coupling invariant is a mathematical property; calling it perichoresis is an interpretation.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "lean4",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.6,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/lean4.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "lean_formal",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "lean4",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C007",
+      "claim_text": "Aseity (self-existence) is the self-sustaining nature of EM waves in vacuum.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "mixed",
+      "evidence_needed": [
+        "Standard physics that EM waves propagate without external source."
+      ],
+      "evidence_present": [
+        "EM wave propagation is textbook physics."
+      ],
+      "evidence_gap": [
+        "The mapping to God's self-existence is theological."
+      ],
+      "support": [
+        "An EM wave in vacuum propagates indefinitely. No external energy input."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The analogy is strong but not a proof."
+      ],
+      "kill_condition": "If EM waves require a medium or source.",
+      "required_concession": "The self-sustaining nature of EM waves is an analogy for aseity, not a proof.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "binder",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.7,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/binder.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "mixed",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "binder",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C008",
+      "claim_text": "Simplicity (non-compositeness) is the irreducibility of the quaternion product.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "lean_formal",
+      "evidence_needed": [
+        "Formal proof that the quaternion product cannot be decomposed."
+      ],
+      "evidence_present": [
+        "Lean verification claimed."
+      ],
+      "evidence_gap": [
+        "The proof is not provided."
+      ],
+      "support": [
+        "The quaternion product Q₁Q₂ cannot be decomposed into independent scalar and vector operations."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The mapping to divine simplicity is theological."
+      ],
+      "kill_condition": "If the quaternion product can be decomposed without loss.",
+      "required_concession": "The irreducibility is a mathematical fact; the theological interpretation is separate.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "lean4",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.7,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/lean4.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "lean_formal",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "lean4",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C009",
+      "claim_text": "Omniscience is zero conditional entropy between persons.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "philosophical_argument",
+      "evidence_needed": [
+        "Formal bridge from coupling invariant to Shannon mutual information."
+      ],
+      "evidence_present": [
+        "None; the work admits this is open."
+      ],
+      "evidence_gap": [
+        "No formal derivation linking the coupling to information theory."
+      ],
+      "support": [
+        "H(Person_A | Person_B) = 0 for all pairs A,B."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The claim is speculative; the bridge is missing."
+      ],
+      "kill_condition": "If the coupling invariant does not imply zero conditional entropy.",
+      "required_concession": "This is a proposed interpretation; the formal bridge is not yet established.",
+      "recommended_action": "demote",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "logos",
+        "boundary",
+        "kill-condition"
+      ],
+      "confidence": 0.4,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/logos.svg",
+        "theophysics_glyphs/svg/boundary.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "philosophical_argument",
+        "recommended_action": "demote",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "logos",
+          "boundary",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C010",
+      "claim_text": "Omnipotence is the perpetual mutual generation of E and B fields.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "mixed",
+      "evidence_needed": [
+        "Standard physics that curl equations describe mutual generation."
+      ],
+      "evidence_present": [
+        "Maxwell's equations are textbook."
+      ],
+      "evidence_gap": [
+        "The mapping to omnipotence is theological."
+      ],
+      "support": [
+        "∇×E = −∂B/∂t and ∇×B = μ₀ε₀∂E/∂t."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The analogy is strong but not a proof."
+      ],
+      "kill_condition": "If the mutual generation is not perpetual.",
+      "required_concession": "The mutual generation is an analogy for omnipotence, not a proof.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "binder",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.7,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/binder.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "mixed",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "binder",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C011",
+      "claim_text": "Immutability is time-translation invariance of the Lagrangian.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "mixed",
+      "evidence_needed": [
+        "Noether's theorem is standard."
+      ],
+      "evidence_present": [
+        "Noether's theorem is cited."
+      ],
+      "evidence_gap": [
+        "The mapping to God's immutability is theological."
+      ],
+      "support": [
+        "∂L/∂t = 0 → Noether conserved charge."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The analogy is strong but not a proof."
+      ],
+      "kill_condition": "If the Lagrangian is not time-invariant.",
+      "required_concession": "Time-translation invariance is an analogy for immutability, not a proof.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "binder",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.7,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/binder.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "mixed",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "binder",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C012",
+      "claim_text": "Love is the ground state of the coupling potential between persons.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "bridge_mapping",
+      "defense_class": "DERIVATION",
+      "claim_level": "bridge",
+      "evidence_lane": "philosophical_argument",
+      "evidence_needed": [
+        "Formal identification of inter-person coupling with Yukawa coupling."
+      ],
+      "evidence_present": [
+        "None; the work admits this is open."
+      ],
+      "evidence_gap": [
+        "No formal derivation linking the coupling to the strong force."
+      ],
+      "support": [
+        "The coupling constant between persons = the ground state of the confinement potential."
+      ],
+      "dependencies": [
+        "W0.1-C001",
+        "Chain 2"
+      ],
+      "risks": [
+        "The claim is speculative; the formal bridge is missing."
+      ],
+      "kill_condition": "If the coupling is not formally the same as the Yukawa coupling.",
+      "required_concession": "This is a proposed interpretation; the formal identification is not yet established.",
+      "recommended_action": "demote",
+      "glyphs": [
+        "theology",
+        "isomorphism",
+        "proof",
+        "logos",
+        "boundary",
+        "kill-condition"
+      ],
+      "confidence": 0.4,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/isomorphism.svg",
+        "theophysics_glyphs/svg/proof.svg",
+        "theophysics_glyphs/svg/logos.svg",
+        "theophysics_glyphs/svg/boundary.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "bridge_mapping",
+        "defense_class": "DERIVATION",
+        "claim_level": "bridge",
+        "evidence_lane": "philosophical_argument",
+        "recommended_action": "demote",
+        "glyphs": [
+          "theology",
+          "isomorphism",
+          "proof",
+          "logos",
+          "boundary",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C013",
+      "claim_text": "The Trinity is the unique non-contingent system; all created things are contingent.",
+      "framework_lane": "trinity",
+      "physics_claim_type": "not_physics",
+      "defense_class": "AXIOM",
+      "claim_level": "theological",
+      "evidence_lane": "scripture_theology",
+      "evidence_needed": [
+        "Theological support for God's aseity."
+      ],
+      "evidence_present": [
+        "Scripture: 'I AM WHO I AM'."
+      ],
+      "evidence_gap": [
+        "No formal proof."
+      ],
+      "support": [
+        "The Trinity is the unique non-contingent system."
+      ],
+      "dependencies": [
+        "BC6"
+      ],
+      "risks": [
+        "This is a theological axiom, not a derived claim."
+      ],
+      "kill_condition": "If a non-triadic system can be self-sustaining.",
+      "required_concession": "This is a theological premise, not a mathematical conclusion.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "theology",
+        "claim",
+        "axiom",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.8,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/theology.svg",
+        "theophysics_glyphs/svg/claim.svg",
+        "theophysics_glyphs/svg/axiom.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "trinity",
+        "physics_claim_type": "not_physics",
+        "defense_class": "AXIOM",
+        "claim_level": "theological",
+        "evidence_lane": "scripture_theology",
+        "recommended_action": "keep",
+        "glyphs": [
+          "theology",
+          "claim",
+          "axiom",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C014",
+      "claim_text": "The seven derived terms (T.1-T.7) are emergent properties of the triadic-coupled system at equilibrium.",
+      "framework_lane": "meta",
+      "physics_claim_type": "simulation_runtime",
+      "defense_class": "ADMISSION",
+      "claim_level": "meta",
+      "evidence_lane": "adversarial_review",
+      "evidence_needed": [
+        "Formal derivation of each term from the coupling invariant."
+      ],
+      "evidence_present": [
+        "None; the work states these are proposed, not locked."
+      ],
+      "evidence_gap": [
+        "No Lean formalization of the derivative terms."
+      ],
+      "support": [
+        "The derivative terms below are NEWLY DERIVED (July 2026) ... This chain has NOT been through adversarial testing."
+      ],
+      "dependencies": [
+        "W0.1-C001"
+      ],
+      "risks": [
+        "The terms are not verified."
+      ],
+      "kill_condition": "If any term is inconsistent with the coupling invariant.",
+      "required_concession": "The terms are proposed, not proven.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "mesh",
+        "python-verified",
+        "doubt",
+        "ai-validated",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 0.9,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/mesh.svg",
+        "theophysics_glyphs/svg/python-verified.svg",
+        "theophysics_glyphs/svg/doubt.svg",
+        "theophysics_glyphs/svg/ai-validated.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "meta",
+        "physics_claim_type": "simulation_runtime",
+        "defense_class": "ADMISSION",
+        "claim_level": "meta",
+        "evidence_lane": "adversarial_review",
+        "recommended_action": "keep",
+        "glyphs": [
+          "mesh",
+          "python-verified",
+          "doubt",
+          "ai-validated",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C015",
+      "claim_text": "The kill condition: show that the triadic-coupled system at equilibrium exhibits a property inconsistent with these seven terms, or that a non-triadic coupling can produce the same properties.",
+      "framework_lane": "meta",
+      "physics_claim_type": "not_physics",
+      "defense_class": "ADMISSION",
+      "claim_level": "meta",
+      "evidence_lane": "adversarial_review",
+      "evidence_needed": [
+        "None; this is a stated kill condition."
+      ],
+      "evidence_present": [
+        "The kill condition is explicitly stated."
+      ],
+      "evidence_gap": [
+        "None."
+      ],
+      "support": [
+        "Show that the triadic-coupled system at equilibrium exhibits a property inconsistent with these seven terms, OR show that an equivalent set of properties can emerge from a non-triadic coupling."
+      ],
+      "dependencies": [],
+      "risks": [
+        "None."
+      ],
+      "kill_condition": "None.",
+      "required_concession": "None.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "mesh",
+        "claim",
+        "doubt",
+        "ai-validated",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 1.0,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/mesh.svg",
+        "theophysics_glyphs/svg/claim.svg",
+        "theophysics_glyphs/svg/doubt.svg",
+        "theophysics_glyphs/svg/ai-validated.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "meta",
+        "physics_claim_type": "not_physics",
+        "defense_class": "ADMISSION",
+        "claim_level": "meta",
+        "evidence_lane": "adversarial_review",
+        "recommended_action": "keep",
+        "glyphs": [
+          "mesh",
+          "claim",
+          "doubt",
+          "ai-validated",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    },
+    {
+      "claim_id": "W0.1-C016",
+      "claim_text": "The boundary: this chain does not push into divine mechanics (how the coupling originated, why three).",
+      "framework_lane": "meta",
+      "physics_claim_type": "not_physics",
+      "defense_class": "ADMISSION",
+      "claim_level": "meta",
+      "evidence_lane": "adversarial_review",
+      "evidence_needed": [
+        "None; this is a stated boundary."
+      ],
+      "evidence_present": [
+        "The boundary is explicitly stated."
+      ],
+      "evidence_gap": [
+        "None."
+      ],
+      "support": [
+        "BOUNDARY (Feb 14, 2026): This chain operates AT the boundary. It describes the Trinity's properties at equilibrium but does NOT push into divine mechanics."
+      ],
+      "dependencies": [],
+      "risks": [
+        "None."
+      ],
+      "kill_condition": "None.",
+      "required_concession": "None.",
+      "recommended_action": "keep",
+      "glyphs": [
+        "mesh",
+        "claim",
+        "doubt",
+        "ai-validated",
+        "canonical",
+        "kill-condition"
+      ],
+      "confidence": 1.0,
+      "glyph_paths": [
+        "theophysics_glyphs/svg/mesh.svg",
+        "theophysics_glyphs/svg/claim.svg",
+        "theophysics_glyphs/svg/doubt.svg",
+        "theophysics_glyphs/svg/ai-validated.svg",
+        "theophysics_glyphs/svg/canonical.svg",
+        "theophysics_glyphs/svg/kill-condition.svg"
+      ],
+      "classification_bundle": {
+        "framework_lane": "meta",
+        "physics_claim_type": "not_physics",
+        "defense_class": "ADMISSION",
+        "claim_level": "meta",
+        "evidence_lane": "adversarial_review",
+        "recommended_action": "keep",
+        "glyphs": [
+          "mesh",
+          "claim",
+          "doubt",
+          "ai-validated",
+          "canonical",
+          "kill-condition"
+        ]
+      }
+    }
+  ],
+  "fixes": [
+    {
+      "severity": "P1",
+      "target": "W0.1-C002",
+      "problem": "The claim that '+' is a person is presented as a literal truth, but it is a rhetorical analogy.",
+      "repair": "Explicitly label this as an illustrative analogy, not a formal claim."
+    },
+    {
+      "severity": "P1",
+      "target": "W0.1-C003",
+      "problem": "The claim that the Trinity generates numbers is speculative and lacks rigorous support.",
+      "repair": "Demote to a theological interpretation and provide a philosophical argument if kept."
+    },
+    {
+      "severity": "P2",
+      "target": "W0.1-C005",
+      "problem": "The mapping of Maxwell equations to persons is arbitrary and not formally derived.",
+      "repair": "Provide a formal rule for the mapping or label it as a proposed interpretation."
+    },
+    {
+      "severity": "P2",
+      "target": "W0.1-C009",
+      "problem": "The omniscience claim lacks a formal bridge to information theory.",
+      "repair": "Either provide the bridge or mark as an open problem."
+    },
+    {
+      "severity": "P2",
+      "target": "W0.1-C012",
+      "problem": "The love claim lacks formal identification with the Yukawa coupling.",
+      "repair": "Either provide the formal identification or mark as an open problem."
+    }
+  ],
+  "log_notes": [
+    "The parent isomorphism is claimed Lean-verified, but the proof is not provided; the derived terms are explicitly unverified.",
+    "The work includes a kill condition and boundary, which are good practices.",
+    "The mapping of physical equations to divine persons is a theological interpretation and should not be treated as a mathematical derivation."
+  ]
+}

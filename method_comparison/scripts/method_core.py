@@ -225,6 +225,54 @@ def normalize_api_stage(stage_id: str, data: dict[str, Any]) -> dict[str, Any]:
             "dg7": dg7,
             "veto_status": "NOT_ADJUDICATED",
         }
+    if stage_id == "08_natural_process_mirror":
+        rows = []
+        for item in data.get("natural_process_mirrors", []):
+            if not isinstance(item, dict):
+                continue
+            stage_map = item.get("ordered_stage_map", [])
+            if not isinstance(stage_map, list):
+                stage_map = []
+            rows.append({
+                "claim_id": str(item.get("claim_id") or ""),
+                "source_process": str(item.get("source_process") or ""),
+                "natural_domain": str(item.get("natural_domain") or "unknown"),
+                "natural_process": str(item.get("natural_process") or ""),
+                "part_count_source": int(item.get("part_count_source", 0) or 0),
+                "part_count_mirror": int(item.get("part_count_mirror", 0) or 0),
+                "ordered_stage_map": [
+                    {
+                        "source_stage": str(row.get("source_stage") or ""),
+                        "natural_stage": str(row.get("natural_stage") or ""),
+                        "same_direction": bool(row.get("same_direction", False)),
+                        "same_function": bool(row.get("same_function", False)),
+                        "notes": str(row.get("notes") or ""),
+                    }
+                    for row in stage_map if isinstance(row, dict)
+                ],
+                "directionality": str(item.get("directionality") or "unknown"),
+                "functionality_match": str(item.get("functionality_match") or "unknown"),
+                "mapping_type": str(item.get("mapping_type") or "none"),
+                "constraints_preserved": item.get("constraints_preserved", [])
+                if isinstance(item.get("constraints_preserved", []), list) else [],
+                "failure_modes_preserved": item.get("failure_modes_preserved", [])
+                if isinstance(item.get("failure_modes_preserved", []), list) else [],
+                "lost": item.get("lost", []) if isinstance(item.get("lost", []), list) else [],
+                "introduced": item.get("introduced", []) if isinstance(item.get("introduced", []), list) else [],
+                "test_needed": item.get("test_needed", [])
+                if isinstance(item.get("test_needed", []), list) else [],
+                "status": str(item.get("status") or "unresolved"),
+            })
+        questions = data.get("unresolved_natural_process_questions", [])
+        if not isinstance(questions, list):
+            questions = [str(questions)]
+        status = str(data.get("mirror_gate_status") or "UNRESOLVED").upper()
+        allowed = {"PASSED_CANDIDATE", "PARTIAL", "NEEDS_NATURAL_ANCHOR", "FAILED", "UNRESOLVED"}
+        return {
+            "natural_process_mirrors": rows,
+            "unresolved_natural_process_questions": questions,
+            "mirror_gate_status": status if status in allowed else "UNRESOLVED",
+        }
     return data
 
 
@@ -271,7 +319,12 @@ def empty_for(stage_id: str) -> dict[str, Any]:
         "05_evidence": {"source_support": [], "evidence_requirements": []},
         "06_contradictions": {"contradictions": [], "tensions": []},
         "07_dynamics": {"semantic_vector": {}, "dg7": {}, "veto_status": "UNRESOLVED"},
-        "08_synthesis": {
+        "08_natural_process_mirror": {
+            "natural_process_mirrors": [],
+            "unresolved_natural_process_questions": [],
+            "mirror_gate_status": "UNRESOLVED",
+        },
+        "09_synthesis": {
             "summary": "", "strongest_points": [], "weakest_points": [],
             "unresolved": [], "recommended_next_actions": [],
         },
@@ -481,21 +534,83 @@ def local_stage(stage_id: str, text: str, prior: dict[str, Any],
                 "error": str(exc),
             }
 
-    if stage_id == "08_synthesis":
+    if stage_id == "08_natural_process_mirror":
+        process_terms = (
+            "process", "sequence", "stage", "derivation", "restoration",
+            "collapse", "decay", "growth", "transition", "cycle",
+            "mapping", "isomorphism", "bridge", "coherence",
+        )
+        natural_terms = (
+            "physics", "biology", "chemistry", "cosmology", "thermodynamic",
+            "entropy", "cell", "evolution", "population", "information",
+            "channel", "phase transition", "decoherence",
+        )
+        rows = []
+        questions = []
+        for claim in claims:
+            lower = claim["text"].lower()
+            if not any(term in lower for term in process_terms):
+                continue
+            has_natural_hint = any(term in lower for term in natural_terms)
+            if has_natural_hint:
+                natural_domain = lexical_domain(claim["text"])
+                rows.append({
+                    "claim_id": claim["claim_id"],
+                    "source_process": claim["text"],
+                    "natural_domain": natural_domain if natural_domain != "unknown" else "unknown",
+                    "natural_process": "Natural anchor mentioned by source; stage map not adjudicated.",
+                    "part_count_source": 0,
+                    "part_count_mirror": 0,
+                    "ordered_stage_map": [],
+                    "directionality": "unknown",
+                    "functionality_match": "unknown",
+                    "mapping_type": "partial",
+                    "constraints_preserved": [],
+                    "failure_modes_preserved": [],
+                    "lost": [],
+                    "introduced": [],
+                    "test_needed": [
+                        "Decompose source process into ordered stages.",
+                        "Decompose natural candidate into ordered stages.",
+                        "Check same direction and same function for each stage.",
+                    ],
+                    "status": "needs_receipt",
+                })
+            else:
+                questions.append(
+                    f"Find an endogenous natural process mirror for claim {claim['claim_id']}: {claim['text']}"
+                )
+        if rows:
+            gate = "PARTIAL"
+        elif questions:
+            gate = "NEEDS_NATURAL_ANCHOR"
+        else:
+            gate = "UNRESOLVED"
+            questions.append("No load-bearing process mirror candidate was found by the lexical fallback.")
+        return {
+            "natural_process_mirrors": rows[:12],
+            "unresolved_natural_process_questions": questions[:12],
+            "mirror_gate_status": gate,
+        }
+
+    if stage_id == "09_synthesis":
         unresolved = []
         requirements = prior.get("05_evidence", {}).get("evidence_requirements", [])
         if requirements:
             unresolved.append(f"{len(requirements)} claim-level evidence requirement sets remain unresolved.")
         if prior.get("07_dynamics", {}).get("veto_status") != "ADJUDICATED":
             unresolved.append("Nabla veto is not semantically adjudicated.")
+        mirror_gate = prior.get("08_natural_process_mirror", {}).get("mirror_gate_status")
+        if mirror_gate and mirror_gate != "PASSED_CANDIDATE":
+            unresolved.append(f"Natural process mirror gate remains {mirror_gate}.")
         return {
             "summary": (
                 f"The local lane extracted {len(claims)} Candidate claims and applied all "
-                "eight stages. Its outputs nominate review targets; they do not establish truth."
+                "nine stages. Its outputs nominate review targets; they do not establish truth."
             ),
             "strongest_points": [
                 "Exact source quotations are retained.",
-                "Claims, evidence requirements, tests, and dynamics remain separate.",
+                "Claims, evidence requirements, tests, dynamics, and natural mirrors remain separate.",
             ],
             "weakest_points": [
                 "Lexical inference may miss paraphrase, scope, and implied dependencies.",

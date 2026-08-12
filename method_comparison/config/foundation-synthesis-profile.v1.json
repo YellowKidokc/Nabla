@@ -1,0 +1,76 @@
+{
+  "schema_version": "atlas-foundation-synthesis-profile/v1",
+  "name": "Consilience Atlas Foundational Synthesis",
+  "provider": "deepseek",
+  "max_source_chars": 90000,
+  "max_output_tokens": 12000,
+  "required_lenses": [
+    "axiom_spine",
+    "master_equation",
+    "justice_mercy_restoration",
+    "agency_and_free_will",
+    "cross_domain_natural_process",
+    "formal_and_empirical_receipts",
+    "counterexamples_and_kill_conditions"
+  ],
+  "output_contract": {
+    "foundation_summary": "string",
+    "lens_assessments": [
+      {
+        "lens": "required lens",
+        "status": "SUPPORTED|PARTIAL|UNRESOLVED|CONTRADICTED",
+        "claim": "string",
+        "source_refs": [{"source_id": "string", "source_quote": "exact string"}],
+        "limits": ["string"],
+        "next_receipt": "string"
+      }
+    ],
+    "candidate_atoms": [
+      {
+        "atom_id": "string",
+        "claim": "string",
+        "mode": "AXIOM|FORMAL_DERIVATION|MATHEMATICAL_PROOF|EMPIRICAL_EVENT|MORAL_CLAIM|THEOLOGICAL_CLAIM|INTERPRETATION|PREDICTION|UNKNOWN",
+        "domain": "string",
+        "source_refs": [{"source_id": "string", "source_quote": "exact string"}],
+        "dependencies": ["atom_id"],
+        "kill_condition": "string",
+        "standing": "candidate"
+      }
+    ],
+    "master_equation": {
+      "variables": [{"symbol": "string", "source_meaning": "string", "cross_domain_role": "string", "status": "SUPPORTED|PARTIAL|UNRESOLVED"}],
+      "product_structure_status": "SUPPORTED|PARTIAL|UNRESOLVED|CONTRADICTED",
+      "source_refs": [{"source_id": "string", "source_quote": "exact string"}],
+      "tests_needed": ["string"]
+    },
+    "justice_mercy_agency_chain": {
+      "stages": [{"order": "integer", "stage": "string", "source_ref": {"source_id": "string", "source_quote": "exact string"}, "status": "SUPPORTED|PARTIAL|UNRESOLVED"}],
+      "free_will_role": "string",
+      "closure_status": "SUPPORTED|PARTIAL|UNRESOLVED|CONTRADICTED",
+      "missing_receipts": ["string"]
+    },
+    "natural_process_mirrors": [
+      {
+        "candidate_atom_id": "string",
+        "natural_domain": "physics|biology|chemistry|cosmology|information_theory|other|unknown",
+        "source_process": "string",
+        "natural_process": "string",
+        "ordered_stage_map": [{"source_stage": "string", "natural_stage": "string", "same_direction": "boolean", "same_function": "boolean"}],
+        "mapping_type": "isomorphism_candidate|homomorphism_candidate|partial|analogy|none",
+        "status": "candidate|partial|needs_receipt|failed|unresolved",
+        "lost_or_introduced": ["string"],
+        "test_needed": ["string"]
+      }
+    ],
+    "conflicts_and_open_questions": ["string"],
+    "admission_boundary": ["string"]
+  },
+  "rules": [
+    "Every substantive assessment must cite one or more exact source quotes and source ids from the immutable packet.",
+    "Candidate atoms remain Candidate. Never promote material to admitted, proved, empirically confirmed, or isomorphic solely from this call.",
+    "Keep formal verification, source assertions, empirical evidence, moral claims, and theological interpretation visibly distinct.",
+    "Use isomorphism_candidate only when a full directional, functional, and constraint-preserving map is supplied; otherwise use homomorphism_candidate, partial, analogy, or none.",
+    "State unresolved and contradictory material explicitly. Repetition across sources is not independent corroboration.",
+    "Keep prose compact. Use at most 12 candidate atoms and at most 3 source quotes per lens."
+  ]
+}

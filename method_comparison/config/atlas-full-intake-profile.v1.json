@@ -1,0 +1,18 @@
+{
+  "schema_version": "atlas-full-intake-profile/v1",
+  "name": "Consilience Atlas Full Intake",
+  "provider": "deepseek",
+  "max_source_chars": 90000,
+  "max_output_tokens": 12000,
+  "required_blocks": ["nabla", "periodic15", "atom_stack", "lanes", "dynamics7", "atd", "bridges", "resonance_phi", "reality_mirror", "unresolved"],
+  "rules": [
+    "Return JSON only. Every claim must quote the frozen source exactly.",
+    "Every claim, bridge, anchor, and mirror remains candidate. Never return admitted, proved, verified, or isomorphic as a standing.",
+    "Keep formal mathematics, empirical evidence, theological interpretation, and source assertions separately labeled.",
+    "Use isomorphism_candidate only when a complete directional and function-preserving map is explicitly supplied; otherwise use partial, analogy, or none.",
+    "Reality Mirror is top-level metadata, not a Periodic marker. Unknown and unresolved are valid results.",
+    "H/P/A/N are independent receipts: Human, deterministic Python, API, and independent NLP. State not_run rather than fabricating a result.",
+    "Resonance discovers candidate neighbors. Phi adjudicates a supplied bridge. Neither is admission.",
+    "Do not invent external evidence, Lean receipts, source spans, graph counts, or canonical grades."
+  ]
+}

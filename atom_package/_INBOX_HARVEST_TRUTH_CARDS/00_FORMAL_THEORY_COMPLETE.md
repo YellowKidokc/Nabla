@@ -1,4 +1,4 @@
-# The Formal Theory of Theophysics
+we're we're creating this # The Formal Theory of Theophysics
 **POF 2828 | May 2, 2026 | Required reading before any framework work**
 **Version 1.0 — The Argument from Axiom to Evidence to Boundary**
 
