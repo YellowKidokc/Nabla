@@ -1,0 +1,39 @@
+# Cloudflare deployment scaffold for the Consilience Atlas Workbench.
+#
+# This file declares the deployment shape only. It does not itself port the
+# Python orchestration; see docs/d1-architecture.md for the migration plan.
+# The React frontend and a thin Worker API layer are the deployable pieces; the
+# Python rails remain the local reference implementation until the Worker port
+# is deliberate.
+#
+# Before first deploy, create the bindings and fill in the placeholder ids:
+#   wrangler d1 create atlas-workbench
+#   wrangler r2 bucket create atlas-originals
+#   wrangler d1 migrations apply atlas-workbench --local   # dev
+#   wrangler d1 migrations apply atlas-workbench --remote  # prod
+
+name = "atlas-workbench"
+main = "worker/index.ts"
+compatibility_date = "2026-01-01"
+
+# Structured, queryable Atlas state. Migrations live in db/migrations and are
+# generated from db/schema.sql (the single source of truth shared with the
+# local SQLite mirror).
+[[d1_databases]]
+binding = "ATLAS_DB"
+database_name = "atlas-workbench"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "db/migrations"
+
+# Original artifacts: uploaded PDFs, large HTML, exported JSON bundles. D1 rows
+# are capped at 2 MB, so originals never go into D1 — only their object key,
+# hash, and ingestion metadata do (documents.r2_object_key).
+[[r2_buckets]]
+binding = "ATLAS_ORIGINALS"
+bucket_name = "atlas-originals"
+
+[vars]
+# Non-secret config only. Provider API keys are set with:
+#   wrangler secret put DEEPSEEK_API_KEY
+#   wrangler secret put OPENAI_API_KEY
+WORKBENCH_MODE = "candidate-sandbox"

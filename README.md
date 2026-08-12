@@ -98,6 +98,17 @@ Open http://localhost:5173. The Vite dev server proxies `/api` to the local
 Python bridge on port 8765. See `gui/README.md` for the current capability and
 trust-boundary notes.
 
+### Persistence (D1-shaped)
+
+Candidate AtlasRecords can be saved to a local SQLite mirror that shares its
+schema (`db/schema.sql`) with the Cloudflare D1 deployment target. The bridge
+exposes `POST /api/records`, `GET /api/records`, and
+`GET /api/records/{record_id}`. The local database lives at
+`meta/_state/workbench.db` (git-ignored) and is migrated automatically. Saving
+is durability only; it never promotes a Candidate to Admitted. See
+`docs/d1-architecture.md` for the storage boundary and the Cloudflare
+sequencing (`wrangler.toml`).
+
 ## Repository Boundaries
 
 - Native grade and meta score are separate values.

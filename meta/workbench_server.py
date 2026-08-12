@@ -17,7 +17,9 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
+
+from meta.store import AtlasStore
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 GUI_DIST = REPO_ROOT / "gui" / "dist"
@@ -25,10 +27,24 @@ GUI_PUBLIC = REPO_ROOT / "gui"
 METHOD_RUNNER = REPO_ROOT / "method_comparison" / "scripts" / "run_comparison.py"
 METHOD_OUTPUT = REPO_ROOT / "method_comparison" / "output"
 GOLD_MASTER = REPO_ROOT / "gold" / "master-equation" / "atlas-record-v1.master-equation.trilemma.json"
+# Local D1-shaped SQLite mirror. The same db/schema.sql runs against Cloudflare
+# D1 in deployment; see docs/d1-architecture.md.
+WORKBENCH_DB = REPO_ROOT / "meta" / "_state" / "workbench.db"
 
 
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def open_store() -> AtlasStore:
+    """Open the local SQLite store, one connection per request.
+
+    ThreadingHTTPServer serves each request on its own thread, and SQLite
+    connections are not shared across threads, so a fresh connection per
+    request is the safe pattern here.
+    """
+    WORKBENCH_DB.parent.mkdir(parents=True, exist_ok=True)
+    return AtlasStore(WORKBENCH_DB)
 
 
 def safe_suffix(name: str) -> str:
@@ -111,16 +127,37 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 self._json(HTTPStatus.OK, read_json(GOLD_MASTER))
             return
+        if path == "/api/records":
+            query = parse_qs(urlparse(self.path).query)
+            with open_store() as store:
+                records = store.list_records(
+                    document_id=(query.get("document_id") or [None])[0],
+                    state=(query.get("state") or [None])[0],
+                )
+            self._json(HTTPStatus.OK, {"records": records})
+            return
+        if path.startswith("/api/records/"):
+            record_id = path[len("/api/records/"):]
+            with open_store() as store:
+                record = store.get_record(record_id)
+            if record is None:
+                self._json(HTTPStatus.NOT_FOUND, {"error": "record not found"})
+            else:
+                self._json(HTTPStatus.OK, record)
+            return
         self._serve_static(path)
 
     def do_POST(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
-        if path != "/api/analyze":
+        if path not in {"/api/analyze", "/api/records"}:
             self._json(HTTPStatus.NOT_FOUND, {"error": "not found"})
             return
         try:
             length = int(self.headers.get("Content-Length", "0"))
             body = json.loads(self.rfile.read(length).decode("utf-8"))
+            if path == "/api/records":
+                self._json(HTTPStatus.OK, self._save_record(body))
+                return
             payload = run_analysis(
                 filename=str(body.get("filename") or "document.md"),
                 text=str(body.get("text") or ""),
@@ -130,6 +167,24 @@ class Handler(BaseHTTPRequestHandler):
             self._json(HTTPStatus.OK, payload)
         except Exception as exc:  # keep UI receipt explicit
             self._json(HTTPStatus.BAD_REQUEST, {"status": "refused", "error": str(exc)})
+
+    def _save_record(self, body: dict[str, Any]) -> dict[str, Any]:
+        """Persist a Candidate AtlasRecord to the local D1-shaped store.
+
+        Saving is a durability step only. It never promotes Candidate to
+        Admitted; the record's own audit state is stored verbatim.
+        """
+        record = body.get("record")
+        if not isinstance(record, dict) or "id" not in record:
+            raise ValueError("body.record must be an AtlasRecord object")
+        with open_store() as store:
+            record_id = store.save_record(
+                record,
+                document_id=body.get("document_id"),
+                run_id=body.get("run_id"),
+                timestamp=str(body.get("timestamp") or ""),
+            )
+        return {"status": "saved", "record_id": record_id}
 
     def _serve_static(self, path: str) -> None:
         root = GUI_DIST if (GUI_DIST / "index.html").exists() else GUI_PUBLIC

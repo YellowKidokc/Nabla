@@ -19,3 +19,10 @@ meta/output/
 !nabla/_processed/.gitkeep
 !nabla/_logs/.gitkeep
 !nabla/_state/.gitkeep
+
+# Local D1-shaped SQLite mirror (structured state lives in Cloudflare D1 in prod)
+meta/_state/*
+!meta/_state/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
