@@ -1,1 +1,8 @@
-%PACKET%
+{
+  "schema_version": "atlas-hand-classification-packet/v1",
+  "packet_id": "hand-packet:atoms-505:2026-08-12",
+  "packet_sha256": "sha256:fe2837be52da7dfdd22334daff1ba9249295c44d46ab1782114d4e00cd246aec",
+  "atom_count": 505,
+  "authoritative_copy": "Delivered to David directly on 2026-08-12 (label-blind classification view). The full packet is committed alongside the lane receipts after both hand lanes complete, per the blindness rule.",
+  "reproducibility": "Rebuild from atom_package/_ledger/atoms/*.json keeping only atom_id, title, claim, bridges, kill_conditions; verify against packet_sha256."
+}
