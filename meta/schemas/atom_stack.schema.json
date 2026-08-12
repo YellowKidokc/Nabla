@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://faiththruphysics.com/schema/atom_stack.schema.json",
+  "title": "Atom Stack",
+  "description": "The local canonical unit aggregated by papers, series, and global views.",
+  "type": "object",
+  "required": ["atom", "components", "claims", "tests", "arguments", "upstream", "downstream", "dependencies", "warrant", "dynamics", "ascent", "translation", "descent"],
+  "properties": {
+    "atom": {"type": "object", "required": ["atom_id"]},
+    "components": {"type": "array", "items": {"type": "object", "required": ["component_id", "type", "content"]}},
+    "claims": {"type": "array", "items": {"type": "object", "required": ["claim_id", "text", "mode"]}},
+    "tests": {"type": "array", "items": {"type": "object"}},
+    "arguments": {"type": "array", "items": {"type": "object"}},
+    "upstream": {"type": "array"},
+    "downstream": {"type": "array"},
+    "dependencies": {"type": "array"},
+    "warrant": {"type": "object"},
+    "dynamics": {"type": "object"},
+    "ascent": {"type": "object"},
+    "translation": {"type": "object"},
+    "descent": {"type": "object"}
+  }
+}

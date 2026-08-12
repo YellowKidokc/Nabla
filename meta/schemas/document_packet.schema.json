@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://faiththruphysics.com/schema/document_packet.schema.json",
+  "title": "Frozen Document Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source", "frozen_at"],
+  "properties": {
+    "schema_version": {"const": "document-packet/v1"},
+    "frozen_at": {"type": "string"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filename", "path", "sha256", "bytes", "text"],
+      "properties": {
+        "filename": {"type": "string", "minLength": 1},
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "text": {"type": "string"}
+      }
+    }
+  }
+}

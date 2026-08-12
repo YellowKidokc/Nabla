@@ -4,6 +4,8 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.*
+!.env.example
 .fisnote
 nabla/_inbox/*
 nabla/_outbox/*
@@ -11,6 +13,7 @@ nabla/_processed/*
 nabla/_logs/*
 nabla/_state/*
 method_comparison/output/
+meta/output/
 !nabla/_inbox/.gitkeep
 !nabla/_outbox/.gitkeep
 !nabla/_processed/.gitkeep

@@ -19,6 +19,17 @@ proposer, DG7 probe, nine-factor wrapper guard, and station runner.
 The method_comparison folder contains the immutable packet builder, shared
 eight-stage contract, isolated local and API lanes, comparator, and receipts.
 
+The meta folder is the canonical orchestration facade. It provides typed atom
+objects, independent API and local-NLP adapters, AtlasRecord v1 rails, the
+Periodic 15 projection, Candidate/Admitted graph separation, and one command
+entrypoint. The gold folder holds frozen comparison specimens, while templates
+contains the Atlas workbench.
+
+The atom_package folder is a provenance-preserving, squashed Git subtree of
+[Faith-through-physics-atoms](https://github.com/YellowKidokc/Faith-through-physics-atoms),
+imported from branch `OBS-Plugin-Final-Claude` at commit `2aa7387`. It remains
+the native atom data layer; `meta/` adapts it without rewriting its meanings.
+
 ## Shared Process
 
 1. Claim extraction
@@ -46,6 +57,10 @@ Run the Nabla station:
 
     python nabla/pipeline.py
 
+Build and validate the Master Equation AtlasRecord specimen:
+
+    python -m meta.pipeline
+
 Place Markdown or text inputs in nabla/_inbox. Results are written to
 nabla/_outbox.
 
@@ -60,3 +75,19 @@ Run a full comparison:
 Set DEEPSEEK_API_KEY or OPENAI_API_KEY before using an external provider. The
 local semantic service defaults to http://localhost:8700; when unavailable,
 the receipt explicitly identifies the deterministic lexical fallback.
+
+## Repository Boundaries
+
+- Native grade and meta score are separate values.
+- Candidate and Admitted graphs are separate states.
+- Reality Mirror is top-level metadata, not Periodic Marker 16.
+- Paper, Series, and Global views aggregate atom stacks; they do not reinterpret
+  atom claims from scratch.
+- API and local-NLP lanes receive the same frozen source and are compared only
+  after independent execution. Agreement is not proof or admission.
+- Secrets are read only from environment variables. No `.env` file is committed.
+
+Refresh the Atom subtree after reviewing the source branch:
+
+    git fetch atom-source OBS-Plugin-Final-Claude
+    git subtree pull --prefix=atom_package atom-source OBS-Plugin-Final-Claude --squash
