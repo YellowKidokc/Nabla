@@ -47,9 +47,7 @@ def resolve_source_path(raw_path: str) -> Path:
     path = Path(raw_path)
     if path.exists():
         return path
-    # Ledger receipts may retain a Windows path even when the workbench runs on
-    # POSIX. Treat both separators as provenance syntax, not host path syntax.
-    candidate = ATOM_ROOT / "master-equation" / "01_canonical" / raw_path.replace("\\", "/").rsplit("/", 1)[-1]
+    candidate = ATOM_ROOT / "master-equation" / "01_canonical" / path.name
     return candidate if candidate.exists() else path
 
 

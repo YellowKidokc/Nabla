@@ -951,22 +951,6 @@ body {
 <base target="_blank">
 </head>
 <body>
-<section class="analysis-loader" aria-label="Paper analysis">
-  <strong>Analyze a paper</strong>
-  <input id="paper-input" type="file" accept=".md,.txt,.html,.htm,text/plain,text/markdown,text/html">
-  <select id="provider-select" aria-label="Analysis provider"><option value="local">Local NLP</option><option value="deepseek">DeepSeek</option><option value="openai">OpenAI</option></select>
-  <button id="analyze-button" class="nabla-decode-btn">Analyze</button>
-  <span id="analysis-status" role="status">Choose a Markdown, TXT, or HTML paper.</span>
-</section>
-<section class="canonical-workbench" id="canonical-workbench" hidden>
-  <div class="canonical-controls"><strong>Resolution</strong><div id="canonical-resolution"></div><strong>View</strong><div id="canonical-view"></div></div>
-  <div class="canonical-state"><strong>Graph state:</strong> <span id="canonical-state">Candidate</span> — Candidate and Admitted remain separate.</div>
-  <div id="canonical-pills" class="canonical-pills"></div>
-  <pre id="canonical-detail" class="canonical-detail">Select a pill to inspect its canonical object.</pre>
-</section>
-<style>
-.analysis-loader,.canonical-workbench{padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap}.analysis-loader input,.analysis-loader select{color:var(--text);background:var(--deep);border:1px solid var(--border);padding:6px}.canonical-workbench{display:block}.canonical-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.canonical-controls button{margin:2px}.canonical-state{margin:8px 0;color:var(--amber)}.canonical-pills{display:flex;gap:6px;flex-wrap:wrap}.canonical-detail{margin-top:10px;max-height:320px;overflow:auto;background:var(--deep);padding:10px;border:1px solid var(--border);white-space:pre-wrap}.canonical-pill.active{border-color:var(--gold);color:var(--gold)}
-</style>
 
 <!-- ═══════════════════════════════════════════════════════════════
      JSON INJECTION POINT
@@ -1537,49 +1521,6 @@ window.ATLAS_DATA = {
   renderAlerts();
 
   console.log('Atlas template rendered. ATLAS_DATA keys:', Object.keys(D));
-})();
-</script>
-
-<script>
-(() => {
-  const resolutions = ['Local','Paper','Series','Global','Resonance'];
-  const views = ['Periodic','Dependency','Proof','Dynamics','Ascent-Descent','Bridges','Reality'];
-  let record = null, activeView = 'Periodic';
-  const buttonSet = (id, values, callback) => {
-    document.getElementById(id).innerHTML = values.map(v => `<button class="toggle-btn" data-value="${v}">${v}</button>`).join('');
-    document.querySelectorAll(`#${id} button`).forEach(b => b.onclick = () => { document.querySelectorAll(`#${id} button`).forEach(x=>x.classList.remove('active')); b.classList.add('active'); callback(b.dataset.value); });
-    document.querySelector(`#${id} button`).classList.add('active');
-  };
-  const objects = () => {
-    if (!record) return [];
-    const map = {
-      Periodic: Object.entries(record.periodic15).map(([id,value])=>({id,value,type:'periodic'})),
-      Dependency: record.edges, Proof: record.atom_stack.tests, Dynamics: [{id:'dynamics',...record.atom_stack.dynamics}],
-      'Ascent-Descent': [{id:'ascent-translation-descent',...record.atom_stack.dynamics}], Bridges: record.bridges,
-      Reality: [record.reality_mirror,...record.anchors]
-    };
-    if (activeView === 'Proof') return [...record.atom_stack.claims,...record.evidence_receipts,...map.Proof];
-    return map[activeView] || [];
-  };
-  const render = () => {
-    const rows = objects(), host = document.getElementById('canonical-pills');
-    host.innerHTML = rows.map((o,i) => `<button class="pill canonical-pill" data-index="${i}">${o.claim_id||o.evidence_id||o.test_id||o.edge_id||o.bridge_id||o.anchor_id||o.id||o.class||'object'}</button>`).join('') || '<span class="dim">No canonical objects in this view.</span>';
-    host.querySelectorAll('button').forEach(b => b.onclick = () => { host.querySelectorAll('button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); document.getElementById('canonical-detail').textContent = JSON.stringify(rows[Number(b.dataset.index)], null, 2); });
-  };
-  buttonSet('canonical-resolution', resolutions, () => render());
-  buttonSet('canonical-view', views, value => { activeView=value; render(); });
-  document.getElementById('analyze-button').onclick = async () => {
-    const file=document.getElementById('paper-input').files[0], status=document.getElementById('analysis-status');
-    if (!file) { status.textContent='Select a paper first.'; return; }
-    status.textContent='Analyzing…';
-    try {
-      const provider=document.getElementById('provider-select').value;
-      const response=await fetch(`/api/analyze?provider=${encodeURIComponent(provider)}`, {method:'POST',headers:{'Content-Type':'application/octet-stream','X-Filename':file.name},body:file});
-      const payload=await response.json(); if (!response.ok) throw new Error(payload.error || 'Analysis failed');
-      record=payload.record; document.getElementById('canonical-state').textContent=record.audit.candidate_or_admitted;
-      document.getElementById('canonical-workbench').hidden=false; status.textContent=`Schema-valid ${record.schema_version}: ${record.id.record_id}`; render();
-    } catch (error) { status.textContent=`Refused: ${error.message}`; }
-  };
 })();
 </script>
 

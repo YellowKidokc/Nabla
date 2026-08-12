@@ -7,7 +7,6 @@ from pathlib import Path
 
 from meta.rails.atlas_api_rails import validate
 from meta.rails.ingest import DEFAULT_ATOM, DEFAULT_OUT, build_record
-from meta.rails.method_adapter import adapt_method_run
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -17,25 +16,11 @@ SCHEMA = REPO_ROOT / "meta" / "schemas" / "atlas_record.schema.json"
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build and validate one canonical AtlasRecord from an Atom source.")
     parser.add_argument("--atom", type=Path, default=DEFAULT_ATOM)
-    parser.add_argument("--source", type=Path, help="Markdown, TXT, or HTML paper to analyze")
-    parser.add_argument("--provider", choices=["local", "deepseek", "openai"], default="local")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--no-jsonschema", action="store_true")
     args = parser.parse_args()
 
-    if args.source:
-        from method_comparison.scripts.method_core import build_packet, read_json, run_lane
-        contract = read_json(REPO_ROOT / "method_comparison/config/process-contract.v1.json")
-        runtime = read_json(REPO_ROOT / "method_comparison/config/runtime.json")
-        packet = build_packet(args.source, contract)
-        lane = "local_nlp" if args.provider == "local" else "external_api"
-        run, _ = run_lane(packet, contract, runtime, lane, None if lane == "local_nlp" else args.provider)
-        if run["status"] != "complete":
-            print(json.dumps({"status": "refused", "errors": ["semantic lane did not complete"], "run": run}, indent=2))
-            return 2
-        record = adapt_method_run(packet, run)
-    else:
-        record = build_record(args.atom)
+    record = build_record(args.atom)
     errors = validate(record, None if args.no_jsonschema else SCHEMA)
     if errors:
         print(json.dumps({"status": "refused", "errors": errors}, indent=2))

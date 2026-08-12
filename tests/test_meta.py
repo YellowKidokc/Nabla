@@ -11,9 +11,6 @@ from meta.nlp.convergence import compare_outputs
 from meta.nlp.rules_adapter import RulesAdapter
 from meta.rails.ingest import DEFAULT_ATOM, build_record
 from meta.rails.source_freeze import freeze
-from meta.rails.method_adapter import adapt_method_run
-from meta.rails.atlas_api_rails import validate
-from method_comparison.scripts.method_core import build_packet, read_json, run_lane
 
 
 class MetaPipelineTests(unittest.TestCase):
@@ -53,20 +50,6 @@ class MetaPipelineTests(unittest.TestCase):
         comparison = compare_outputs(output, output)
         self.assertEqual(comparison["token_jaccard"], 1.0)
         self.assertEqual(comparison["interpretation"], "process_output_similarity_only")
-
-    def test_gold_001_paper_lane_adapts_to_schema_valid_candidate(self) -> None:
-        root = Path(__file__).resolve().parents[1]
-        contract = read_json(root / "method_comparison/config/process-contract.v1.json")
-        runtime = read_json(root / "method_comparison/config/runtime.json")
-        source = root / "atom_package/master-equation/01_canonical/ME-01-001-trilemma-impossibility.html"
-        packet = build_packet(source, contract)
-        run, _ = run_lane(packet, contract, runtime, "local_nlp")
-        record = adapt_method_run(packet, run)
-        self.assertEqual(validate(record, root / "meta/schemas/atlas_record.schema.json"), [])
-        self.assertEqual(record["audit"]["candidate_or_admitted"], "Candidate")
-        self.assertEqual(record["periodic15"]["marker_10_native_grade"], "UNKNOWN")
-        self.assertTrue(record["atom_stack"]["claims"])
-        self.assertTrue(all(claim["source_span_ids"] for claim in record["atom_stack"]["claims"]))
 
 
 if __name__ == "__main__":
