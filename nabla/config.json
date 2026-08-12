@@ -1,0 +1,13 @@
+{
+  "station_id": "nabla-chi-classifier",
+  "station_name": "Nabla-Chi Classifier",
+  "extensions": [".md", ".markdown", ".txt"],
+  "source_globs": [],
+  "sample_source_globs": [],
+  "min_words": 40,
+  "density_bands": { "1": 0.4, "2": 1.2, "3": 3.0 },
+  "evidence_per_family": 2,
+  "context_chars": 160,
+  "archive_inputs": false,
+  "templates": {}
+}

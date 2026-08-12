@@ -1,0 +1,76 @@
+{
+  "schema_version": "atlas-method-process/v1",
+  "name": "Atlas Independent Method Comparison",
+  "rules": [
+    "Both lanes receive the same immutable source packet and stage order.",
+    "A lane may return UNRESOLVED but may not omit a required field.",
+    "Later stages may consume only the source packet and earlier outputs from the same lane.",
+    "Neither lane sees the other lane before comparison.",
+    "Agreement is not truth, proof, evidence grade, or admission.",
+    "Raw responses, backend identity, prompts, hashes, and refusals are preserved."
+  ],
+  "stages": [
+    {
+      "id": "01_claims",
+      "title": "Claim extraction",
+      "instruction": "Extract at most 30 material, separable claims. Ignore navigation and page furniture. Preserve exact source quotations. Do not combine evidence with the claim.",
+      "required_keys": ["claims"],
+      "item_contract": {"claims": {"claim_id": "string", "text": "string", "source_quote": "exact string", "extraction_status": "candidate"}}
+    },
+    {
+      "id": "02_classification",
+      "title": "Claim classification",
+      "instruction": "Classify every extracted claim by epistemic mode and native domain. Mode must be one of AXIOM, PRE_ASSUMPTION, EMPIRICAL_EVENT, HISTORICAL_RECORD, MATHEMATICAL_PROOF, FORMAL_DERIVATION, CLASSIFICATION, INTERPRETATION, SYMBOLIC_TRUTH, MORAL_CLAIM, THEOLOGICAL_CLAIM, EXPERIENTIAL_REPORT, PREDICTION, UNKNOWN. UNKNOWN is allowed.",
+      "required_keys": ["claim_assessments"],
+      "item_contract": {"claim_assessments": {"claim_id": "existing claim_id", "mode": "string", "domain": "string", "standing": "active_candidate", "confidence": "0..1"}}
+    },
+    {
+      "id": "03_dependencies",
+      "title": "Dependency and load-bearing analysis",
+      "instruction": "Identify directed dependencies and nominate load-bearing claims. Proposals are not admitted graph edges.",
+      "required_keys": ["dependencies", "load_bearing_claim_ids"],
+      "item_contract": {"dependencies": {"from": "claim_id", "relation": "depends_on_candidate", "to": "claim_id", "basis": "string", "score": "0..1"}}
+    },
+    {
+      "id": "04_falsification",
+      "title": "Falsification and kill conditions",
+      "instruction": "State a concrete defeat or revision condition for each material claim. Do not pretend every theological claim is laboratory-falsifiable.",
+      "required_keys": ["tests"],
+      "item_contract": {"tests": {"claim_id": "existing claim_id", "type": "string", "condition": "string", "status": "candidate_untested"}}
+    },
+    {
+      "id": "05_evidence",
+      "title": "Evidence and warrant mapping",
+      "instruction": "Separate source support from independent evidence requirements. Do not count restatement as corroboration.",
+      "required_keys": ["source_support", "evidence_requirements"],
+      "item_contract": {
+        "source_support": {"claim_id": "existing claim_id", "source_quote": "exact string", "relation": "source_asserts", "independent": false},
+        "evidence_requirements": {"claim_id": "existing claim_id", "required": ["string"], "status": "unresolved"}
+      }
+    },
+    {
+      "id": "06_contradictions",
+      "title": "Contradiction and tension scan",
+      "instruction": "Identify contradictions or tensions with exact claim references. Absence of a detected contradiction is not proof of coherence.",
+      "required_keys": ["contradictions", "tensions"],
+      "item_contract": {"contradictions": {"claim_a": "claim_id", "claim_b": "claim_id", "reason": "string", "status": "candidate"}}
+    },
+    {
+      "id": "07_dynamics",
+      "title": "Nabla and DG7 dynamics",
+      "instruction": "Produce the exact Nabla ten-dimension semantic proposal as integer scores 0..3 for G,M,E,S,T,K,R,Q,F,C. Produce DG7 statuses PRESENT, PARTIAL, ABSENT, or UNRESOLVED for coherence,degradation,measure,threshold,asymmetry,restoration,counterexample. This is a proposal. Lexical absence never adjudicates a veto, so veto_status must be NOT_ADJUDICATED.",
+      "required_keys": ["semantic_vector", "dg7", "veto_status"],
+      "item_contract": {
+        "semantic_vector": {"G": "0..3", "M": "0..3", "E": "0..3", "S": "0..3", "T": "0..3", "K": "0..3", "R": "0..3", "Q": "0..3", "F": "0..3", "C": "0..3"},
+        "dg7": {"coherence": "status", "degradation": "status", "measure": "status", "threshold": "status", "asymmetry": "status", "restoration": "status", "counterexample": "status"},
+        "veto_status": "NOT_ADJUDICATED"
+      }
+    },
+    {
+      "id": "08_synthesis",
+      "title": "Page-level synthesis",
+      "instruction": "Aggregate the lane's prior outputs into a coherent account with unresolved items and explicit limits. Do not promote Candidate material.",
+      "required_keys": ["summary", "strongest_points", "weakest_points", "unresolved", "recommended_next_actions"]
+    }
+  ]
+}
