@@ -65,7 +65,7 @@ Boundaries enforced by the schema and the store, mirroring README
 
 The local SQLite mirror lives at `meta/_state/workbench.db` (git-ignored) and is
 created and migrated automatically by `meta.store.AtlasStore`, which executes
-`db/schema.sql`. The workbench server exposes:
+`db/schema.sql`. The local workbench server (`python -m gui.app`) exposes:
 
 - `POST /api/records` — persist a Candidate AtlasRecord `{ "record": {...} }`
 - `GET  /api/records` — list record summaries (`?document_id=` / `?state=`)

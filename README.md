@@ -30,11 +30,10 @@ The atom_package folder is a provenance-preserving, squashed Git subtree of
 imported from branch `OBS-Plugin-Final-Claude` at commit `2aa7387`. It remains
 the native atom data layer; `meta/` adapts it without rewriting its meanings.
 
-The `gui/` folder is the local React Workbench. It is a Candidate sandbox for
-loading outside papers, running the existing independent semantic lanes, seeing
-comparison receipts, opening Gold-001, and recording a separate human review.
-The GUI renders receipts; it does not itself classify, grade, admit, or create
-bridges.
+The `gui/` folder is the local paper workbench (`python -m gui.app`), a
+zero-dependency Candidate sandbox for loading outside papers, running the
+independent semantic lanes, and adapting a run into a schema-valid AtlasRecord.
+It does not itself classify, grade, admit, or create bridges.
 
 ## Shared Process
 
@@ -63,6 +62,15 @@ Run the Nabla station:
 
     python nabla/pipeline.py
 
+Run the local paper workbench, open the printed URL, choose a Markdown/TXT/HTML
+paper and select Local NLP or a configured API provider:
+
+    python -m gui.app
+
+The same source-to-record path is available from the command line:
+
+    python -m meta.pipeline --source paper.md --provider local --out atlas-record.json
+
 Build and validate the Master Equation AtlasRecord specimen:
 
     python -m meta.pipeline
@@ -82,30 +90,14 @@ Set DEEPSEEK_API_KEY or OPENAI_API_KEY before using an external provider. The
 local semantic service defaults to http://localhost:8700; when unavailable,
 the receipt explicitly identifies the deterministic lexical fallback.
 
-### Local GUI
-
-Start the Python orchestration bridge from the repository root:
-
-    python -m meta.workbench_server
-
-Then start the React UI:
-
-    cd gui
-    npm install
-    npm run dev
-
-Open http://localhost:5173. The Vite dev server proxies `/api` to the local
-Python bridge on port 8765. See `gui/README.md` for the current capability and
-trust-boundary notes.
-
 ### Persistence (D1-shaped)
 
-Candidate AtlasRecords can be saved to a local SQLite mirror that shares its
-schema (`db/schema.sql`) with the Cloudflare D1 deployment target. The bridge
-exposes `POST /api/records`, `GET /api/records`, and
-`GET /api/records/{record_id}`. The local database lives at
-`meta/_state/workbench.db` (git-ignored) and is migrated automatically. Saving
-is durability only; it never promotes a Candidate to Admitted. See
+Candidate AtlasRecords produced by the workbench can be saved to a local SQLite
+mirror that shares its schema (`db/schema.sql`) with the Cloudflare D1
+deployment target. The `gui.app` server exposes `POST /api/records`,
+`GET /api/records`, and `GET /api/records/{record_id}`. The local database lives
+at `meta/_state/workbench.db` (git-ignored) and is migrated automatically.
+Saving is durability only; it never promotes a Candidate to Admitted. See
 `docs/d1-architecture.md` for the storage boundary and the Cloudflare
 sequencing (`wrangler.toml`).
 

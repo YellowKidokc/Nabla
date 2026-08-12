@@ -224,6 +224,7 @@
         "coverage": { "type": "number", "minimum": 0, "maximum": 1 },
         "statement": { "type": "string" },
         "source": { "type": "string" },
+        "source_span_ids": { "type": "array", "items": { "type": "string" } },
         "does_not_show": { "type": "array", "items": { "type": "string" } }
       }
     },
@@ -238,6 +239,7 @@
         "condition": { "type": "string" },
         "status": { "type": "string" },
         "blast_radius": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "edge": {
@@ -251,6 +253,7 @@
         "to": { "type": "string" },
         "status": { "type": "string" },
         "source": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "dynamics_block": {
@@ -262,6 +265,7 @@
         "translation": {},
         "descent": {},
         "meeting_state": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "bridge": {
@@ -274,6 +278,7 @@
         "mapping_type": { "type": "string" },
         "standing": { "type": "string" },
         "forbidden": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "anchor": {
@@ -286,6 +291,7 @@
         "status": { "type": "string" },
         "target_id": { "type": "string" },
         "limitations": { "type": "string" }
+        ,"source_span_ids": { "type": "array", "items": { "type": "string" } }
       }
     },
     "computed_block": {

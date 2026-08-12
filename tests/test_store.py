@@ -58,6 +58,16 @@ class AtlasStoreTests(unittest.TestCase):
         ).fetchone()["n"]
         self.assertEqual(first, second)
 
+    def test_save_with_run_id_but_no_prior_run_row(self) -> None:
+        # The /api/analyze -> save path passes a run_id without pre-creating the
+        # run row; the store must keep referential integrity on its own.
+        record_id = self.store.save_record(self.record, run_id="run-xyz", timestamp="t")
+        self.assertEqual(record_id, self.record_id)
+        row = self.store.conn.execute(
+            "SELECT run_id FROM atlas_records WHERE record_id = ?", (record_id,)
+        ).fetchone()
+        self.assertEqual(row["run_id"], "run-xyz")
+
     def test_document_and_run_links(self) -> None:
         self.store.save_document(
             "doc-1", title="Master Equation", kind="html",

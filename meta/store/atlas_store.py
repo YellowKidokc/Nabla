@@ -140,6 +140,15 @@ class AtlasStore:
         rm = record.get("reality_mirror", {})
         audit = record.get("audit", {})
 
+        # Ensure the run reference resolves so the FK holds even when the caller
+        # only knows the run_id (e.g. the id echoed back from /api/analyze). A
+        # richer row can be written later via save_run().
+        if run_id is not None:
+            self.conn.execute(
+                "INSERT OR IGNORE INTO runs (run_id, created_at) VALUES (?, ?)",
+                (run_id, timestamp),
+            )
+
         # Clearing children first keeps the projection an exact function of the
         # current JSON (ON DELETE CASCADE handles the child rows).
         self.conn.execute("DELETE FROM atlas_records WHERE record_id = ?", (record_id,))
